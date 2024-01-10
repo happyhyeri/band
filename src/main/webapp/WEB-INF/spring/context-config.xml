@@ -23,6 +23,10 @@
 	 
 	<mvc:resources mapping="/upload/productImage/**"  
 		location="file:${upload.productImage.dir}" /> -->
+		
+
+	<mvc:resources mapping="/band/upload/coverImage/**"  
+		location="file:${band.upload.coverImage.dir}" cache-period="0"/> 
 	
 	
 	<!-- interceptor config 

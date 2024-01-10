@@ -8,9 +8,15 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
-	private String userId;
+public class BandMember {
+	
+	private int memberId;
+	private String memberBandRoomId;
+	private String memberUserId;
+	private int memberProfileId;
+	private String memberStatus;
+	
 }
