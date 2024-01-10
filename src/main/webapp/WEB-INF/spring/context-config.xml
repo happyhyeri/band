@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+		
+	<!-- bean을 자동생성 -->
+	<context:component-scan base-package="org.edupoll.band"/>
+	<!-- <context:property-placeholder location="/WEB-INF/spring/application.properties"/> -->
+	<!-- String을 Date로 바꿔준다 -->
+	<mvc:annotation-driven/>
+	<mvc:default-servlet-handler/>
+	
+	<!-- 
+	<mvc:resources mapping="/upload/profileImage/**"  
+		location="file:${upload.profileImage.dir}" cache-period="0"/> 캐시페리어드를 0으로 해준다 
+	 
+	<mvc:resources mapping="/upload/productImage/**"  
+		location="file:${upload.productImage.dir}" /> -->
+	
+	
+	<!-- interceptor config 
+	<bean id="logonCheckInterceptor" class="org.edupoll.band.interceptor.LogonCheckInterceptor"></bean>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/chat/**"/>
+			<mvc:mapping path="/settings/**"/>
+			<mvc:mapping path="/product/register"/>
+			<ref bean="logonCheckInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	-->
+	<!-- interceptor 등록 -->
+	<!-- <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/"/>
+			<ref bean="keepLoginInterceptor"/>
+		</mvc:interceptor>	
+	</mvc:interceptors>-->
+	
+	<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+	
+	<!-- default handlerMapping & viewResolver configuration-->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>	
+	
+	<!-- multipart request handler configuration -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property name="uploadTempDir" value="file:c:\\tempo"></property>
+	</bean>
+	
+	<!-- DataSource configuration -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@13.125.229.23:1521:xe"></property>
+		<property name="username" value="band"></property>
+		<property name="password" value="1111"></property>
+	</bean>
+	
+	<!-- mabatis configuration -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  <property name="dataSource" ref="dataSource" />
+	  <property name="mapperLocations" value="/WEB-INF/mybatis/mapper/*.xml" />
+	  <property name="configLocation" value="WEB-INF/mybatis/config.xml"></property>
+	</bean>
+	
+	<!-- mybatis sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<mybatis-spring:scan base-package="org.edupoll.band.dao"/>
+	
+</beans>
