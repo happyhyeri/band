@@ -2,8 +2,74 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="org.edupoll.band.dao.UserDao">
-  	
-  	
-  </mapper>
+
+<mapper namespace="org.edupoll.band.dao.UserDao">
+
+	<resultMap type="user" id="userWithProfile">
+
+		<result column="user_id" property="userId" />
+		<result column="User_Password" property="userPassword" />
+		<result column="Platform" property="platform" />
+		<result column="Access_Token" property="accessToken" />
+		<result column="Phone_Number" property="phoneNumber" />
+		<result column="birth" property="birth" />
+		<result column="gender" property="gender" />
+ 
+		<association property="profile" javaType="profile">
+
+			<result property="profileId" column="profile_Id" />
+			<result property="profileUserId" column="profile_User_Id" />
+			<result property="profileNickName" column="profile_NickName" />
+			<result property="profileImageUrl" column="profile_Image_Url" />
+
+		</association>
+
+	</resultMap>
+
+	<insert id="save">
+		insert into users values (#{userId}, #{userPassword,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR},
+		#{accessToken,jdbcType=VARCHAR} ,#{phoneNumber,jdbcType=VARCHAR}, #{birth,jdbcType=DATE}, #{gender,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="userUpdate">
+		UPDATE users
+		<set>
+			<if test="userPassword != null">
+				USER_PASSWORD = #{userPassword,jdbcType=VARCHAR },
+			</if>
+			<if test="platform != null">
+				PLATFORM = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="accessToken != null">
+				ACCESS_TOKEN = #{accessToken,jdbcType=VARCHAR },
+			</if>
+			<if test="phoneNumber != null">
+				PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR },
+			</if>
+			<if test="birth != null">
+				birth = #{birth,jdbcType=DATE },
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=VARCHAR },
+			</if>
+		</set>
+			where user_id= #{userId}
+		
+	</update>
+
+	<select id="findUserById" resultType="user">
+		select * from users where user_id = #{id}
+	</select>
+
+
+	<select id="findUserByIdwithProfile" resultMap="userWithProfile">
+		select u.*,
+		p.profile_Id,p.profile_NickName,p.profile_Image_Url
+		from users u
+		join profiles p
+		on u.user_id = p.profile_User_Id
+		where u.user_id = #{userId}
+	</select>
+
+
+</mapper>

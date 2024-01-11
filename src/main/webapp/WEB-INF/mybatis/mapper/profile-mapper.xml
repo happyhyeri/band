@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.edupoll.band.dao.ProfileDao">
+  
+  	<insert id ="profileSave">
+  		insert into profiles values (Profiles_SEQ.NEXTVAL, #{profileUserId}, #{profileNickName,jdbcType=VARCHAR}, #{profileImageUrl,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<update id ="profileUpdate">
+  		update profiles
+  		<set>
+			<if test="profileId != null">
+				profile_Id = #{profileId },
+			</if>
+			<if test="profileNickName != null">
+				PROFILE_NICKNAME = #{profileNickName,jdbcType=VARCHAR },
+			</if>
+			<if test="profileImageUrl != null">
+				PROFILE_IMAGE_URL = #{profileImageUrl,jdbcType=VARCHAR },
+			</if>
+		</set>
+  		where PROFILE_USER_ID = #{profileUserId}
+
+  	</update>
+  	
+
+
+  	
+  	<select id = "findProfileById" resultType ="profile">
+  		select * from profiles where PROFILE_USER_ID = #{profileUserId}
+  	</select>
+  	
+  	
+  </mapper>
