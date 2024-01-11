@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.edupoll.band.dao.BandMemberDao">
+	
+	<insert id="saveMember">
+		insert into bandmembers values(bandmembers_seq.nextval, #{memberBandRoomId}, #{memberUserId}, #{memberProfileId}, #{memberStatus})
+	</insert>
+	
+	<select id="findByRoomIdAndUserId" resultType="bandMember">
+		select * from bandmembers where member_bandroom_id = #{memberBandRoomId} member_user_id = #{memberUserId} 
+	</select>
+	
+	<select id="findByMemberId" resultType="bandMember">
+		select * from bandmembers where member_id = #{memberId}
+	</select>
+	
+	<update id="updateStatus">
+		update bandmembers set member_status = #{memberStatus} where member_id = #{memberId}
+	</update>
+
+</mapper>

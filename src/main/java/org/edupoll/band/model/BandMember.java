@@ -12,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BandMember {
-	
+
 	private int memberId;
 	private String memberBandRoomId;
 	private String memberUserId;
 	private int memberProfileId;
 	private String memberStatus;
-	
+
 }

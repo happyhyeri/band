@@ -53,34 +53,34 @@
 	<!-- default handlerMapping & viewResolver configuration-->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/view/"></property>
-		<property name="suffix" value=".jsp"></property>
+		<property name="prefix" value="/WEB-INF/view/"/>
+		<property name="suffix" value=".jsp"/>
 	</bean>	
 	
 	<!-- multipart request handler configuration -->
 	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		id="multipartResolver">
-		<property name="uploadTempDir" value="file:c:\\tempo"></property>
+		<property name="uploadTempDir" value="file:c:\\tempo"/>
 	</bean>
 	
 	<!-- DataSource configuration -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
-		<property name="url" value="jdbc:oracle:thin:@13.125.229.23:1521:xe"></property>
-		<property name="username" value="band"></property>
-		<property name="password" value="1111"></property>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@13.125.229.23:1521:xe"/>
+		<property name="username" value="band"/>
+		<property name="password" value="1111"/>
 	</bean>
 	
 	<!-- mabatis configuration -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	  <property name="dataSource" ref="dataSource" />
 	  <property name="mapperLocations" value="/WEB-INF/mybatis/mapper/*.xml" />
-	  <property name="configLocation" value="WEB-INF/mybatis/config.xml"></property>
+	  <property name="configLocation" value="/WEB-INF/mybatis/config.xml"/>
 	</bean>
 	
 	<!-- mybatis sqlSession -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-	  <constructor-arg index="0" ref="sqlSessionFactory" />
+	  <constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>
 	
 	<mybatis-spring:scan base-package="org.edupoll.band.dao"/>
