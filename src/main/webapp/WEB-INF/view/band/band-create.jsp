@@ -51,9 +51,11 @@
 							<div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
 								<div class="col">
 									<input type="file" id="bandimage" style="display: none;" name="bandimage">
-									<button type="button" class="btn btn-secondary"
-										onclick="document.querySelector('#bandimage').click();"
-										style="--bs-btn-padding-y: 3.2rem; --bs-btn-padding-x: 2.9rem; --bs-btn-font-size: 1.5rem; border: none;">
+									<i class="bi bi-camera"></i>
+									<button type="button" class="btn btn-dark" onclick="document.querySelector('#bandimage').click();"
+										style="--bs-btn-padding-y: 3.2rem; --bs-btn-padding-x: 2.9rem; --bs-btn-font-size: 1.5rem; border: none;
+												color: #F1EFEF">
+										<i class="bi bi-camera-fill"></i>
 									</button>
 								</div>
 								<c:forEach var="one" begin="1" end="7">
@@ -128,10 +130,7 @@
 		</div>
 	</div>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-		crossorigin="anonymous"></script>
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ></script>
 
 	<script>
 	

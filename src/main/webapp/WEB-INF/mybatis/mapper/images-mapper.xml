@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.edupoll.band.dao.AlbumDao">
+  	
+  	<insert id="saveAlbum">
+  		<selectKey order="BEFORE" keyProperty="albumId" resultType="int">
+  			SELECT ALBUMS_SEQ.NEXTVAL FROM DUAL
+  		</selectKey>
+  		INSERT INTO ALBUMS	VALUES
+  		(#{albumId}, #{albumBandRoomId},#{albumTitle}, sysdate)
+  	</insert>
+  	
+  	<select id="findByAlbumId" resultType="album">
+  		SELECT * FROM ALBUMS WHERE ALBUM_ID = #{albumId}
+  	</select>
+  	
+  	<select id="findByBandRoomId" resultType="album">
+  		SELECT * FROM ALBUMS WHERE ALBUM_BANDROOM_ID = #{albumBandRoomId}
+  	</select>
+  	
+  </mapper>

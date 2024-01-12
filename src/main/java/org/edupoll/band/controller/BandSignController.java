@@ -2,14 +2,14 @@ package org.edupoll.band.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
-import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.BandMember;
+import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.CreatBandRoom;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
@@ -74,8 +74,7 @@ public class BandSignController {
 	@PostMapping("/band-create")
 	public String createBandRoom(
 								@ModelAttribute CreatBandRoom createBandRoom 
-								,@RequestParam String coverImageUrl
-								,Model model) throws IllegalStateException, IOException {
+								,@RequestParam String coverImageUrl ,Model model) throws IllegalStateException, IOException {
 		
 		String uuid = UUID.randomUUID().toString();
 		String[] uuids = uuid.split("-");
