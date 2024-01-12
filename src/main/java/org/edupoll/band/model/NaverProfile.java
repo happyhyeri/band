@@ -13,11 +13,18 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NaverUserInfo {
+public class NaverProfile {
+
+	private String id;
+	private String nickname;
 	
-	@SerializedName("response")
-	private NaverProfile naverProfile;
+	@SerializedName("profile_image")
+	private String profileImage;
+	private String gender;
+	@SerializedName("birthday")
+	private String birth;
+	private String mobile;
+	
+	}
+	
 
-
-
-}

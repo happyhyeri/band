@@ -19,7 +19,7 @@ public class NaverAPIService {
 	
 	@Value("${naver.client.id}")
 	String naverClientId;
-	@Value("${naver.redirect.url}")
+	@Value("${naver.redirect.uri}")
 	String naverRedirectUrl;
 	@Value("${naver.client.secret}")
 	String naverClientSecret;
