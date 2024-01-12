@@ -9,6 +9,10 @@ import java.util.Map;
 import org.edupoll.band.dao.AlbumDao;
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
+import org.edupoll.band.dao.PostDao;
+import org.edupoll.band.dao.ProfileDao;
+import org.edupoll.band.model.Post;
+import org.edupoll.band.model.Profile;
 import org.edupoll.band.dao.ImageDao;
 import org.edupoll.band.model.Album;
 import org.edupoll.band.model.BandMember;
@@ -33,6 +37,8 @@ public class BandController {
 
 	private final BandRoomDao bandRoomDao;
 	private final BandMemberDao bandMemberDao;
+	private final ProfileDao profileDao;
+	private final PostDao postDao;
 	private final AlbumDao albumDao;
 	private final ImageDao imageDao;
 
@@ -46,8 +52,19 @@ public class BandController {
 			criteria.put("memberUserId", logonUser.getUserId());
 			BandMember member = bandMemberDao.findByRoomIdAndUserId(criteria);
 			model.addAttribute("member", member);
-			
+
 			// 여기서 logonUser의 모든 프로필 정보를 담은 List<Profile> profiles 보내주기
+			List<Profile> profiles = profileDao.findProfileById(logonUser.getUserId());
+			model.addAttribute("profiles", profiles);
+
+			int memberCnt = bandMemberDao.countMembers(bandRoomId);
+			model.addAttribute("memberCnt", memberCnt);
+
+			BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
+			model.addAttribute("bandRoom", bandRoom);
+			
+			List<Post> posts = postDao.findByRoomIdWithImage(bandRoomId);
+			model.addAttribute("posts", posts);
 		}
 
 		return "band/home";

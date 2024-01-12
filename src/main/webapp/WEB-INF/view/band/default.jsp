@@ -14,7 +14,7 @@
 <body>
 	<div class="container-lg d-flex align-items-start">
 		<div class="pb-3 me-3" style="width: 208px; height: 157px;">
-			<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진"
+			<img src="${fn:startsWith(bandRoom.coverImageUrl, '/band/upload') ? contextPath:'' }${bandRoom.coverImageUrl }" alt="커버사진"
 				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
 			<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 			<div class="mt-2">
@@ -24,33 +24,24 @@
 				<small>${bandRoom.bandRoomDescription }</small>
 			</div>
 			<div class="mt-2">
-				<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
-					data-bs-target="#joinBandModal">글쓰기</button>
+				<c:choose>
+					<c:when test="${member.memberStatus eq 'accept' }">
+						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
+							data-bs-target="#joinBandModal">글쓰기</button>
+					</c:when>
+					<c:when test="${member.memberStatus eq 'request' }">
+						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
+							data-bs-target="#joinBandModal">가입대기중</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
+							data-bs-target="#joinBandModal">가입신청하기</button>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 		<div class="flex-grow-1 flex-column" style="min-width: 500px; background-color:aliceblue;">
-			<div class="h4 m-3 pb-3 border-bottom">
-				가입 신청자
-			</div>
-			<div class="">
-				<c:if test="${empty requests }">
-					<div class="h3 text-center" style="min-height:600px; padding-top:300px;">
-						가입신청자가 없습니다.
-					</div>
-				</c:if>
-				<c:forEach var="one" items="${requests }">
-					<div class="d-flex align-items-center">
-						<div class="ms-3">
-							<img src="${contextPath }/${one.profile.profileImageUrl }" class="rounded-circle" width="32" height="32">
-						</div>
-						<div class="flex-grow-1 ms-3">
-							${one.profile.profileNickName }
-						</div>
-						<button type="button" class="btn" data-value="${one.memberId }" data-type="accept" onclick="processRequest(event)">수락</button>
-						<button type="button" class="btn" data-value="${one.memberId }" data-type="reject" onclick="processRequest(event)">거절</button>
-					</div>
-				</c:forEach>
-			</div>
+			<input type="text" placeholder="글 내용,#태그,@작성자 검색" class="w-100" />
 		</div>
 		<div class="pb-3 ms-3" style="min-width: 208px;">
 			<div>다가오는 일정</div>
@@ -66,39 +57,16 @@
 				<div class="modal-header">
 					<button type="button" class="btn-close position-absolute" style="top:10px; right:10px;" data-bs-dismiss="modal" aria-label="Close"></button>
 					<div class="modal-title fs-5 text-center position-relative" id="staticBackdropLabel">
-						<span class="h3">${bandRoom.bandRoomName }</span><br/>
 					</div>
 				</div>
-				<form action="${contextPath }/${bandRoom.bandRoomId}/request" method="post">
-					<div class="modal-body" style="min-height:270px;">
-					
-					</div>
-					<div class="modal-footer justify-content-center">
-					
-					</div>
-				</form>
+				<div class="modal-body" style="min-height:270px;">
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="submit" class="btn" style="background-color: ${bandRoom.bandRoomColor};"></button>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-		function processRequest(event) {
-			const xhr = new XMLHttpRequest();
-			xhr.open("post", "${contextPath}/band/${bandRoom.bandRoomId}/applications/accept", true);
-			xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-			
-			let target = event.target;
-			xhr.send("type=" + target.dataset.type + "&memberId=" + target.dataset.value);
-			xhr.onreadystatechange = function() {
-				if ( xhr.readyState == 4 ){
-					var response = JSON.parse(xhr.responseText);
-					if (response.result == 'success') {
-						
-					}
-				}
-			}
-			
-		}
-	</script>
 </body>
 </html>

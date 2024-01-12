@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Profile {
-	
 	private int profileId;
 	private String profileUserId;
 	private String profileNickName;
 	private String profileImageUrl;
-
 }

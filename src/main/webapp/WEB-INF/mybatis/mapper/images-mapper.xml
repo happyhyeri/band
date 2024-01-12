@@ -2,23 +2,15 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="org.edupoll.band.dao.AlbumDao">
+
+<mapper namespace="org.edupoll.band.dao.ImageDao">
+
+	<insert id="saveImageFromPost">
+		insert into images values (images_seq.nextval, #{imageUrl}, #{imageAlbumId, jdbcType=NUMERIC}, #{imagePostId}, #{imageMemberId}, sysdate, #{imageBandRoomId})
+	</insert>
   	
-  	<insert id="saveAlbum">
-  		<selectKey order="BEFORE" keyProperty="albumId" resultType="int">
-  			SELECT ALBUMS_SEQ.NEXTVAL FROM DUAL
-  		</selectKey>
-  		INSERT INTO ALBUMS	VALUES
-  		(#{albumId}, #{albumBandRoomId},#{albumTitle}, sysdate)
-  	</insert>
-  	
-  	<select id="findByAlbumId" resultType="album">
-  		SELECT * FROM ALBUMS WHERE ALBUM_ID = #{albumId}
-  	</select>
-  	
-  	<select id="findByBandRoomId" resultType="album">
-  		SELECT * FROM ALBUMS WHERE ALBUM_BANDROOM_ID = #{albumBandRoomId}
-  	</select>
-  	
-  </mapper>
+  <select id="findAllByBandRoomId" resultType="image">
+    SELECT * FROM IMAGES WHERE IMAGE_BANDROOM_ID = #{imageBandRoomId}
+  </select>
+</mapper>
+

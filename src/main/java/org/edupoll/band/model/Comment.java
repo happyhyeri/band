@@ -13,13 +13,10 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
-
-	private Integer imageId;
-	private String imageUrl;
-	private Integer imageAlbumId;
-	private Integer imagePostId;
-	private Integer imageMemberId;
-	private Date imageUploadAt;
-	private String imageBandRoomId;
+public class Comment {
+	private int commentId;
+	private int commentPostId;
+	private int commetMemberId;
+	private String message;
+	private Date commentWriteAt;
 }

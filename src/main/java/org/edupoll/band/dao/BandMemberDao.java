@@ -1,5 +1,6 @@
 package org.edupoll.band.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.edupoll.band.model.BandMember;
@@ -12,4 +13,8 @@ public interface BandMemberDao {
 	public BandMember findByMemberId(int memberId);
 
 	public int updateStatus(Map<String, Object> criteria);
+	
+	public int countMembers(String bandRoomId);
+	
+	public List<BandMember> findRequestByRoomId(String bandRoomId);
 }

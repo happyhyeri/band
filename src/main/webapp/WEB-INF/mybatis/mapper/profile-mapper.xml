@@ -23,11 +23,7 @@
 			</if>
 		</set>
   		where PROFILE_USER_ID = #{profileUserId}
-
   	</update>
-  	
-
-
   	
   	<select id = "findProfileById" resultType ="profile">
   		select * from profiles where PROFILE_USER_ID = #{profileUserId}

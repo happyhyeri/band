@@ -1,5 +1,7 @@
 package org.edupoll.band.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,12 +13,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BandMember {
-	private int memberId;
-	private String memberBandRoomId;
-	private String memberUserId;
-	private int memberProfileId;
-	private String memberStatus;
-	
-	private Profile profile;
+public class PostAdd {
+	private String content;
+	private int postMemberId;
+	private String postBandRoomId;
+	private MultipartFile[] images;
 }
