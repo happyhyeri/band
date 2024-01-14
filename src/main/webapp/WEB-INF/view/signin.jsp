@@ -37,14 +37,14 @@
 						style="border-radius: 12px; background-color: #FEE500; cursor: pointer;"
 						onclick="location.href='${kakaoLoginLink}'">
 						<img
-							src="${pageContext.servletContext.contextPath }/resource/icon/kakao_login.png"
+							src="${pageContext.servletContext.contextPath }/resource/registericon/kakao_login.png"
 							alt="카카오로 로그인하기" />
 					</p>
 					<p
 						style="border-radius: 12px; background-color: #03c75a; cursor: pointer;"
 						onclick="location.href='${NaverLoginLink}'">
 						<img
-							src="${pageContext.servletContext.contextPath }/resource/icon/naver_login.png"
+							src="${pageContext.servletContext.contextPath }/resource/registericon/naver_login.png"
 							style="width: 183px; height: 45px" alt="네이버로 로그인하기" />
 					</p>
 				</div>

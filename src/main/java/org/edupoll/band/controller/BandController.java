@@ -63,42 +63,39 @@ public class BandController {
 
 			BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
 			model.addAttribute("bandRoom", bandRoom);
-			
+
 			List<Post> posts = postDao.findByRoomIdWithImage(bandRoomId);
 			model.addAttribute("posts", posts);
 		}
 
 		return "band/home";
 	}
+
 	// 사진첩 메인
 	@GetMapping("/band/{bandRoomId}/album")
 	public String showAlbum(@PathVariable String bandRoomId, Model model) {
 		Date now = new Date(System.currentTimeMillis());
 		SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy년 MM월");
 		String nowdate = simpleformat.format(now);
-		
+
 		// 앨범 전체가지고오기
 		List<Album> albumList = albumDao.findByBandRoomId(bandRoomId);
+
 		// 이미지 전채개수
 		int cntTotalImage = imageDao.countImageTotal(bandRoomId);
 		model.addAttribute("cntTotalImage", cntTotalImage);
 		
-		// 해당앨범 사진 다 가지고오기
-		
 		// 전체 사진가지고오기(4개만)
 		List<Image> imageList = imageDao.findImageByBandRoomIdToFour(bandRoomId);
-		
-		
 		BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
-		
-		
+
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("imageList", imageList);
-		model.addAttribute("bandroom", bandRoom);		
-		model.addAttribute("now", nowdate);		
+		model.addAttribute("bandroom", bandRoom);
+		model.addAttribute("now", nowdate);
 		return "band/album";
 	}
-	
+
 	// 앨범 생성
 	@PostMapping("/band/{bandRoomId}/album")
 	public String createAlbum(@PathVariable String bandRoomId, 
@@ -115,14 +112,14 @@ public class BandController {
 		}
 		Album one = Album.builder().albumBandRoomId(bandRoomId).albumTitle(albumname).build();
 		albumDao.saveAlbum(one);
-		
+
 		BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
-		model.addAttribute("bandroom", bandRoom);		
-		//해당 앨범으로 보내준다아아....
-		//one.albumId로 앨범상세페이지 보내주기
-		return "redirect:/band/"+bandRoomId+"/album/"+one.getAlbumId();
+		model.addAttribute("bandroom", bandRoom);
+		// 해당 앨범으로 보내준다아아....
+		// one.albumId로 앨범상세페이지 보내주기
+		return "redirect:/band/" + bandRoomId + "/album/" + one.getAlbumId();
 	}
-	
+
 	// 앨범 디테일 창
 	@GetMapping("/band/{bandRoomId}/album/{albumId}")
 	public String showAlbumDetail(@PathVariable int albumId,
@@ -136,10 +133,10 @@ public class BandController {
 		
 		Album foundAlbum = albumDao.findByAlbumId(albumId);
 		model.addAttribute("foundAlbum", foundAlbum);
-		model.addAttribute("bandRoomId", bandRoomId);	
+		model.addAttribute("bandRoomId", bandRoomId);
 		return "band/albumDetail";
 	}
-	
+  
 	// 앨범 전체사진 디테일 창
 		@GetMapping("/band/{bandRoomId}/album/total")
 		public String showAlbumTotalDetail(@PathVariable String bandRoomId, Model model) {
@@ -156,7 +153,5 @@ public class BandController {
 			model.addAttribute("bandRoomId", bandRoomId);	
 			return "band/totalImage";
 		}
-	
-	
-	
+
 }
