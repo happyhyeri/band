@@ -21,7 +21,7 @@ public class IndexController {
 	@GetMapping("/{id}")
 	public String showIndex(@PathVariable String id, HttpSession session) {
 		
-		System.out.println("컨트롤러 ???");
+		//System.out.println("컨트롤러 ???");
 		User user = userDao.findUserById(id);
 		
 		session.setAttribute("logonUser", user);

@@ -8,5 +8,4 @@ public interface BandRoomDao {
 	
 	public BandRoom findByBandRoomId(String bandRoomId);
 
-	public BandRoom findByBandRoomId(String id);
 }
