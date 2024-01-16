@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.google.gson.Gson;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -43,10 +45,9 @@ public class BandController {
 	private final ImageDao imageDao;
 
 	@GetMapping("/band/{bandRoomId}")
-	public String showBandRoom(@SessionAttribute(required = false) User logonUser, @PathVariable String bandRoomId,
+	public String showBandRoom(@SessionAttribute User logonUser, @PathVariable String bandRoomId,
 			Model model) {
 
-		if (logonUser != null) {
 			Map<String, Object> criteria = new HashMap<>();
 			criteria.put("memberBandRoomId", bandRoomId);
 			criteria.put("memberUserId", logonUser.getUserId());
@@ -56,7 +57,7 @@ public class BandController {
 			// 여기서 logonUser의 모든 프로필 정보를 담은 List<Profile> profiles 보내주기
 			List<Profile> profiles = profileDao.findProfileById(logonUser.getUserId());
 			model.addAttribute("profiles", profiles);
-
+			
 			int memberCnt = bandMemberDao.countMembers(bandRoomId);
 			model.addAttribute("memberCnt", memberCnt);
 
@@ -64,8 +65,9 @@ public class BandController {
 			model.addAttribute("bandRoom", bandRoom);
 
 			List<Post> posts = postDao.findByRoomIdWithImage(bandRoomId);
+			Gson gson = new Gson();
+			posts.stream().forEach(elm -> elm.setJson(gson.toJson(elm)));
 			model.addAttribute("posts", posts);
-		}
 
 		return "band/home";
 	}

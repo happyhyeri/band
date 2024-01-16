@@ -61,6 +61,19 @@
 	  ]]>
 	 </select>
 	 
+
+	 <select id="findAllByPostId" resultType="image">
+	 	select * from images where image_post_id = #{imagePostId}
+	 </select>
+	 
+	 <delete id="deleteById">
+	 	delete from images where image_id = #{imageId}
+	 </delete>
+	 
+	 <delete id="deleteByPostId">
+	 	delete from images where image_post_id = #{imagePostId}
+	 </delete>
+  
 	 <delete id="deleteWholeImage">
 	 	DELETE FROM IMAGES WHERE IMAGE_ID = #{imageId}
 	 </delete>

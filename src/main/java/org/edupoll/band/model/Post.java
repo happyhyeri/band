@@ -21,8 +21,10 @@ public class Post {
 	private Date postWriteAt;
 	private int viewCnt;
 	private String postBandRoomId;
-	
+
 	private BandMember member;
 	private List<Image> images;
 	private Profile profile;
+
+	private transient String json;
 }

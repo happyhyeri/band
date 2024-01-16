@@ -32,7 +32,13 @@
 		<selectKey order="BEFORE" keyProperty="memberId" resultType="int">SELECT bandmembers_seq.nextval FROM DUAL</selectKey>
 		insert into bandmembers values(#{memberId}, #{memberBandRoomId}, #{memberUserId}, #{memberProfileId}, #{memberStatus})
 	</insert>
-	
+
+	<select id="findByRoomIdAndUserId" resultMap="bandMemberWithProfile">
+		select * from bandmembers m
+			left join profiles p on m.member_profile_id = p.profile_id
+		where member_bandroom_id = #{memberBandRoomId} and member_user_id = #{memberUserId} 
+  </select>
+
 	<select id="findBandRoomsByMemberId" resultMap="ForIndex">
   		select a.*
 		      ,b.bandroom_name
@@ -43,12 +49,7 @@
 		          from bandmembers m where member_user_id = #{userId}) a 
 		          						join bandrooms b on a.member_bandroom_id = b.bandroom_id 
   	</select>
-  	
 
-	<select id="findByRoomIdAndUserId" resultType="bandMember">
-		select * from bandmembers where member_bandroom_id = #{memberBandRoomId} and member_user_id = #{memberUserId} 
-	</select>
-	
 	<select id="findByMemberId" resultType="bandMember">
 		select * from bandmembers where member_id = #{memberId}
 	</select>
@@ -56,6 +57,12 @@
 	<update id="updateStatus">
 		update bandmembers set member_status = #{memberStatus} where member_id = #{memberId}
 	</update>
+	
+	<select id="findByRoomId" resultMap="bandMemberWithProfile">
+		select * from
+			bandmembers b left join profiles p on b.member_profile_id = p.profile_id
+			where member_bandroom_id = #{bandRoomId} and member_status = 'accept'
+	</select>
 
 	<select id="countMembers" resultType="int">
 		select count(*) from bandmembers where member_bandroom_id = #{memberBandRoomId} and member_status = 'accept'

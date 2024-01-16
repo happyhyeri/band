@@ -2,8 +2,38 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="org.edupoll.band.dao.CommentDao">
-  	
-  	
-  </mapper>
+
+<mapper namespace="org.edupoll.band.dao.CommentDao">
+
+	<resultMap type="comment" id="commentWithDetail">
+		<result column="comment_id" property="commentId"/>
+		<result column="comment_post_id" property="commentPostId"/>
+		<result column="comment_member_id" property="commentMemberId"/>
+		<result column="message" property="message"/>
+		<result column="comment_write_at" property="commentWriteAt"/>
+		<association property="member">
+			<result column="member_id" property="memberId"/>
+			<result column="member_bandroom_id" property="memberBandRoomId"/>
+			<result column="member_user_id" property="memberUserId"/>
+			<result column="member_profile_id" property="memberProfileId"/>
+			<association property="profile">
+				<result column="profile_id" property="profileId"/>
+				<result column="profile_user_id" property="profileUserId"/>
+				<result column="profile_nickname" property="profileNickName"/>
+				<result column="profile_image_url" property="profileImageUrl"/>
+			</association>
+		</association>
+	</resultMap>
+
+	<insert id="saveComment" parameterType="comment">
+		insert into comments values(comments_seq.nextval, #{commentPostId}, #{commentMemberId}, #{message}, sysdate)
+	</insert>
+
+	<select id="findByPostId" resultMap="commentWithDetail">
+		select * from comments c
+		    left join bandmembers m on c.comment_member_id = m.member_id
+		    left join profiles p on m.member_profile_id = p.profile_id
+		    where c.comment_post_id = #{commentPostId}
+	</select>
+
+</mapper>

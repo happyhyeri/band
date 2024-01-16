@@ -40,7 +40,7 @@
   		<selectKey keyProperty="postId" resultType="int" order="BEFORE">
   			select posts_seq.nextval from dual
   		</selectKey>
-  		insert into posts values(#{postId}, #{content}, #{postMemberId}, sysdate, 0, #{postBandRoomId})
+  		insert into posts values(#{postId}, #{content, jdbcType=VARCHAR}, #{postMemberId}, sysdate, 0, #{postBandRoomId})
   	</insert>
   	
   	<select id="findByRoomIdWithImage" resultMap="postWithDetail">
@@ -48,8 +48,21 @@
 		    posts p left join images i on p.post_id = i.image_post_id
 		            left join bandmembers m on p.post_member_id = m.member_id
 		            left join profiles pr on m.member_profile_id = pr.profile_id
+		            left join comments c on p.post_id = c.comment_post_id
 		    where p.post_bandroom_id = #{postBandRoomId}
 		    order by p.post_write_at desc
   	</select>
+  	
+  	<select id="findById" resultType="post">
+  		select * from posts where post_id = #{postId}	
+  	</select>
+  	
+  	<update id="updateContent">
+  		update posts set content = #{content} where post_id = #{postId}
+  	</update>
+  	
+  	<delete id="deleteById">
+  		delete from posts where post_id = #{postId}
+  	</delete>
   	
   </mapper>

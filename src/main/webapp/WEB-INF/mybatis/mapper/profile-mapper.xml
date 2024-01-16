@@ -29,5 +29,8 @@
   		select * from profiles where PROFILE_USER_ID = #{profileUserId}
   	</select>
   	
+  	<select id="findById" resultType="profile">
+  		select * from profiles where profile_id = #{profileId}
+  	</select>
   	
   </mapper>
