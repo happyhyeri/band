@@ -14,14 +14,16 @@
 	img:hover {
 		box-shadow: 1px 1px 20px #ddd;	
 }	
+
 </style>
 </head>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
 <body>
-	<div style="background-color: black; height: 40px; font-size: 14px;">
+<div style="background-color: #F0F0F0;">
+	<div class="sticky-top" style="background-color: black; height: 40px; font-size: 14px;">
 		<ul class="nav justify-content-center gap-5 nav-underline" >
 		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">게시글</a>
+		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a>
@@ -38,8 +40,9 @@
 		</ul>
 	</div>	
 
-	<div class="container-lg d-flex align-items-start mt-3">
-		<div class="pb-3 me-3" style="width: 208px; height: 157px;">
+	<div class="mx-auto d-flex align-items-start pt-3" style="width: 1034px;">
+		<!-- 1 -->
+		<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
 			<!-- 
 			<img src="${fn:startsWith(bandRoom.coverImageUrl, '/band/upload') ? contextPath:'' }${bandRoom.coverImageUrl }" alt="커버사진"
 				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
@@ -71,23 +74,20 @@
 			</div>
 		</div>
 		
-		
-		
-		
-		<div class="flex-grow-1 flex-column" style="min-width: 500px;">
+		<!-- 2 -->
+		<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="min-width: 500px;  background-color: white">
 			
-				<div class="d-flex justify-content-between" style="height: 65px">
+				<div class="d-flex justify-content-between sticky-top" style="height: 65px;  background-color: white">
 					<div class="ps-3 pt-4">
 						<span style="font-weight: bold; font-size: 17px">${foundAlbum.albumTitle } <span style="color: blue">${cntAlbumTotal }</span> </span>
 					</div>
 					<div class="pe-3 pt-3">
-					<form action="" method="post" enctype="multipart/form-data" >
-						<input type="file" id="albumImages" multiple="multiple" style="display: none;"/>
-						<button id="" type="button" onclick="document.querySelector('#albumImages').click();"
-									 style="border: 1px solid #272829;  width: 100px; height: 35px; ; font-size: 13px">
+					
+						<button id="" type="button" data-bs-toggle="modal" data-bs-target="#albumImageUpload"
+									 style="border: 1px solid #272829;  width: 100px; height: 35px; ; font-size: 13px; background-color: white">
 							사진 올리기
 						</button>
-					</form>
+					
 					</div>
 				</div>
 				<hr style="margin: 3px"/>
@@ -95,29 +95,102 @@
 					<div style="font-size: 13px" class="ps-3">
 						최신순 보기(구현전)
 					</div>
-					<div style="font-size: 13px" class="pe-3">
-						저장 | 삭제
+					<div class="pe-3">
+						<button type="button" id="manageButton" style="font-size: 13px;border: none; display: block;">
+							관리
+						</button>
+						<div style="display: none;" id="hiddenButton">
+							<button style="font-size: 13px; border: none" id="saveImage">
+								저장
+							</button>
+							<button style="font-size: 13px; border: none" id="deleteImage">
+								삭제
+							</button>
+						</div>
 					</div>
 				</div>
 				<div class="row row-cols-3" style="margin-left: 10px; width: 99%; margin-top: 18px">
 					<c:forEach var="one" items="${albumAllImages}">
-						<div class="p-1 col" style="width: 164px; height: 164px">
-							<img alt="해당앨범사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
+						<div class="col position-relative" id="images" style="width: 190px; height: 190px; padding: 0.1rem">							
+							<img alt="해당앨범사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%" >
+							<input class="position-absolute top-0 end-0" type="checkbox" id="checkInput" name="checkInput" value="${one.imageUrl}"style="margin-top: 8px; margin-right: 8px; display: none"/>	
 						</div>
-					
 					</c:forEach>
+				</div>
+				<div style="display: none;" id="stickyBottom" class="sticky-bottom">
+					<div class="d-flex"  style="background-color: rgb(255,255,255,0.9); display: none;">
+						<div class="p-2" style="width: 85%;font-size: 13px">
+							<span style="color: blue" id="imageCnt">0</span>장의 사진을 선택하였습니다.
+						</div>
+						<div class="p-2 flex-shrink-1">
+							<button type="button" id="exitManage" style="border: none; font-size: 13px">
+								나가기
+							</button>
+						</div>
+					</div>
 				</div>
 		</div>
 		
-		
-		
-		<div class="pb-3 ms-3" style="min-width: 208px;">
+		<!-- 3 -->
+		<div class="pb-3 ms-3 sticky-top" style="min-width: 208px;">
 			<div>다가오는 일정</div>
 			<div>채팅</div>
 			<div>파일</div>
 			<div>최근 사진</div>
 		</div>
 	</div>
+</div>
+
+		<!-- 앨범사진 image upload modal -->
+		
+		<div class="modal fade" id="albumImageUpload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered" style="width: 500px">
+			    <div class="modal-content" style="height: 500px">
+			      <div class="modal-header" style="padding-left: 205px" >
+			        <div style="font-size: 16px; font-weight: bold; text-align: center">
+			   		     사진 올리기
+			        </div>
+			      </div>
+			      <div style="width: 500px; height: 374px; padding-left: 20px; padding-right: 20px">
+			        <form action="${contextPath }/band/${bandRoomId}/albumImage" method="post" enctype="multipart/form-data" >
+			     	 	<input type="hidden" id="albumId" name="albumId" value=""/>
+			     	 	<div>
+				      		<div style="overflow: scroll;overflow-x:hidden; min-height:270px ; max-height: 270px">	
+			      				<div id="albumImageView" class="row row-cols-5" style="padding-left: 9px; padding-right: 9px" >
+			      				
+			      					<div class="p-1 col">
+							     		<input type="file" style="display: none" multiple="multiple" id="albumImages" name="albumImages"/>
+							     		<button type="button" onclick="document.querySelector('#albumImages').click();" style="width: 90px; height: 90px">
+							     			<i class="bi bi-plus-lg"></i>
+							     		</button>
+			      					</div>
+			      				</div>					     		
+					     	</div>
+				            <div>
+				           		<div style="font-size: 13px;" class="mb-2">앨범 선택하기</div>
+			          			<div>
+						            <select class="form-select" aria-label="Default select example" id="selectedAlbumId" name="selectedAlbumId">
+									  <option style="font-size: 13px" value="0">앨범 지정하지 않음</option>
+									  <c:forEach var="albumname" items="${albumList }">
+										  <option id="selectAlbumId" style="font-size: 13px" ${albumname.albumId eq foundAlbum.albumId ? 'selected' : '' }
+													value="${albumname.albumId }">${albumname.albumTitle }</option>						  
+									  </c:forEach>							  					
+									</select>
+			         			</div>
+			          		</div>
+			     		</div>
+				      <div class="modal-footer justify-content-center" >
+				        <button type="button" id="addAlbumImageCancel" class="btn btn-white" data-bs-dismiss="modal" 
+				        		style="border: 1px solid #E2E2E2; font-size: 12px; width: 90px; height: 34px">취소</button>
+				        <button type="submit" id="addAlbumImageButton"  class="btn" 
+				        		style="background-color:#424769;font-size: 12px; width: 90px; height: 34px; color: white">올리기</button>
+				      </div>
+			        </form>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+
 	<!-- join Modal -->
 	<div class="modal fade" id="joinBandModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" style="width: 360px;">
@@ -152,6 +225,100 @@
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+	
+	const list = document.querySelectorAll('#checkInput');
+	let cnt = 0;
+	
+	list.forEach(function(e){
+		e.onclick = function(evt){
+			if(e.checked == true){
+				cnt++;
+				document.querySelector("#imageCnt").innerHTML = cnt;
+			}else{
+				cnt--;
+				document.querySelector("#imageCnt").innerHTML = cnt;
+			}	
+		}
 
+	})
+	
+	document.querySelector("#manageButton").onclick = function(e){			
+		document.querySelector("#manageButton").style.display = 'none';
+		document.querySelector("#hiddenButton").style.display = 'block';
+		document.querySelector("#stickyBottom").style.display = 'block';
+		
+		list.forEach(function(e){
+			e.style.display = 'block';
+		});
+		
+		
+	}
+	document.querySelector("#exitManage").onclick = function(e){
+		document.querySelector("#manageButton").style.display = 'block';
+		document.querySelector("#hiddenButton").style.display = 'none';
+		document.querySelector("#stickyBottom").style.display = 'none';
+		document.querySelector("#imageCnt").innerHTML = 0;
+		cnt=0;
+		list.forEach(function(evt){
+			evt.checked = false;
+		})
+		
+		list.forEach(function(e){
+			e.style.display = 'none';
+		});
+	}
+	
+	
+	
+	
+	//앨범사진첩에 사진 추가
+	
+	document.querySelector("#albumImages").onchange = function(e) {
+		const files = [...document.querySelector("#albumImages").files];
+	
+		files.forEach(function(file){
+			const fileReader = new FileReader();
+			
+			fileReader.readAsDataURL(file);
+			fileReader.onload = function(e){
+				const div = document.createElement("div");
+				div.className = "p-1 col rounded position-relative";
+				
+				const img = document.createElement("img");
+				img.src = e.target.result;
+				img.width = 90;
+				img.height = 90;
+				img.className = "object-fit-cover";
+				div.appendChild(img);
+				
+				const button = document.createElement("button");
+				button.type = "button";
+			    button.className = "position-absolute top-0 end-0";
+				button.ariaLabel = "Close";
+				button.style.border = "none";
+				button.style.backgroundColor = "transparent";
+				button.style.padding = 0;
+				button.style.paddingTop = "5px";				
+				button.style.margin = 0;
+				div.appendChild(button);
+			
+				const i = document.createElement("i");
+				i.className = "bi bi-x-circle";
+				i.style.color = "white";
+				button.appendChild(i);
+				
+				button.onclick = function() {
+					document.querySelector("#albumImageView").removeChild(this.parentNode);
+				}
+				
+				document.querySelector("#albumImageView").appendChild(div);
+			}	
+		});		
+	}
+	
+	
+	
+	</script>
 </body>
 </html>

@@ -40,14 +40,30 @@
 	 	SELECT COUNT(*) FROM IMAGES WHERE IMAGE_ALBUM_ID = #{imageAlbumId}
 	 </select>
 	 
+	 <select id="findAlbumImageByBandRoomIdToFour" resultType="image">
+	 	<![CDATA[
+	 	select * from images where image_bandroom_id = #{imageBandRoomId}
+                        and image_album_id = #{imageAlbumId}
+                        	and ROWNUM <= 4
+                          	  order by image_id desc
+	 	]]>
+	 </select>
+	 
+	 <select id="findImageByImageId">
+	 	select * from images where image_id = #{imageId}
+	 </select>
 	 
 	 
-	  <select id="findImageByBandRoomIdToFour" resultType="image">
+	  <select id="findImageByBandRoomIdToSix" resultType="image">
 	  <![CDATA[
 	 	select * from images where image_bandroom_id = #{imageBandRoomId}
 	                       and ROWNUM <= 6 order by image_id DESC
 	  ]]>
 	 </select>
+	 
+	 <delete id="deleteWholeImage">
+	 	DELETE FROM IMAGES WHERE IMAGE_ID = #{imageId}
+	 </delete>
 
 </mapper>
 

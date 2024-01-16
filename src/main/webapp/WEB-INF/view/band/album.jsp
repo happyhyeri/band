@@ -59,10 +59,12 @@
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
 <body>
 
-	<div style="background-color: black; height: 40px; font-size: 14px;">
+<div style="background-color: #F0F0F0;">
+	
+	<div class="sticky-top" style="background-color: black; height: 40px; font-size: 14px;">
 		<ul class="nav justify-content-center gap-5 nav-underline" >
 		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">게시글</a>
+		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a>
@@ -80,14 +82,15 @@
 	</div>	
 
 	
-	<div class="container-lg d-flex align-items-start mt-3">
-		<div class="pb-3 me-3" style="width: 208px; height: 157px;">
+	<div class="mx-auto d-flex align-items-start pt-3" style="width: 1034px;">
+		<!-- 1 -->
+		<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
 			<!-- 
 			<img src="${fn:startsWith(bandRoom.coverImageUrl, '/band/upload') ? contextPath:'' }${bandRoom.coverImageUrl }" alt="커버사진"
 				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
 			 -->
-			 <img src="${contextPath }/resource/bandIcon/1.jpg" alt="커버사진"
-				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
+			 <img src="${contextPath }${bandRoom.coverImageUrl}" alt="커버사진"
+				style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 			<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 			<div class="mt-2">
 				멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대
@@ -112,119 +115,133 @@
 				</c:choose>
 			</div>
 		</div>
-		
-		
-		
-		
-		<div style="min-width: 500px;">
-			<div class="d-flex justify-content-between" style="height: 65px">
-				<div class="ps-3 pt-3">
-					<span style="font-weight: bold; font-size: 19px">사진첩</span>
-				</div>
-				<div class="pe-3 pt-3" >
-					<!-- <input type="file" id="albumImage" style="display: none;"/> -->
-					<button id="album" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-								 style="border: 1px solid #272829;  width: 100px; height: 35px;  padding-bottom: 4px">
-						<span style="font-size: 13px;">앨범 만들기</span> 
-					</button>
-				</div>
-			</div>
-			<hr style="color: #BFCFE7; border: 1px solid ;margin: 3px">
-			<div style="padding-right: 13px; margin-top: 6px;">
-				<div class="d-flex justify-content-between" style="margin-bottom: 10px">
-					<div class="ps-3 pt-3">
-						<div style="font-weight: bold; font-size: 15px; cursor: pointer;" onclick="location.href='${contextPath}/band/${bandRoomId }/album/total'"
-								>전체사진 <span style="color: #B2B2B2; font-size: 14px">${cntTotalImage }</span></div>
-						<div style="font-size: 11px; color: #73777B;">${now }</div>
+
+		<!-- 2 -->
+		<c:choose>
+			<c:when test="${logonUser ne null }">
+			
+				<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="min-width: 500px; background-color: white">
+					<div class="d-flex justify-content-between sticky-top" style="height: 65px; background-color: white">
+						<div class="ps-3 pt-3">
+							<span style="font-weight: bold; font-size: 19px">사진첩</span>
+						</div>
+						<div class="pe-3 pt-3" >
+							<button id="album" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+										 style="border: 1px solid #272829;  width: 100px; height: 35px;  padding-bottom: 4px; background-color: white">
+								<span style="font-size: 13px;">앨범 만들기</span> 
+							</button>
+						</div>
 					</div>
-					<div class="pe-3 pt-3">
-						<button type="button" data-bs-toggle="modal" data-bs-target="#imageUpload"
-								style="border: none; background-color: white;">
-							<i class="bi bi-plus-lg"></i>
-						</button>
-					</div>
-				</div>
-				<div class="row row-cols-3" style="margin-left: 10px;width: 100%">
-					<c:forEach var="one" items="${imageList }" varStatus="status">
-						<c:choose>
-							<c:when test="${status.last }">
-								<div class="p-1 col lb-wrap" style="width: 154px; height: 154px">									
-									<a href="${contextPath }/band/${bandRoomId}/album/total">
-										<img class="lb-image" alt="전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
-										<span class="lb-text" style="width: 154px; height: 154px; padding-top: 60px; margin-left: 4px">더보기 +</span>
-									</a>									
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="p-1 col" style="width: 158px; height: 158px;">
-									<a href="${contextPath }/band/${bandRoomId}/album/total">
-										<img alt="전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
-									</a>
-								</div>
-							</c:otherwise>
-						</c:choose>				
-						
-					</c:forEach>
-					
-				</div>
-		
-			</div>
-			<hr style="color: #BFCFE7; border: 1px solid">
-			<div>
-				<div class="d-flex justify-content-between">
-					<div class="ps-3 pt-3">
-						<div style="font-weight: bold; font-size: 15px">앨범</div>
-					</div>
-					<div class="pe-3 pt-3">업데이트순!!(수정)</div>
-				</div>
-			</div>
-			<div>	
-				<c:forEach var="one" items="${albumList }">
-					<div style="border: 1px solid #B2B1B9; margin-top: 20px">
-						<div class="d-flex justify-content-between pt-2" >
-							<div class="ps-3 pt-1">
-								<a href="${contextPath }/band/${bandRoomId}/album/${one.albumId}" >
-								<div style="font-weight: bold; font-size: 15px">${one.albumTitle }</div></a>
-								<div style="font-size: 11px; color: #B2B1B9;">${now }</div>
+					<hr style="color: #BFCFE7; border: 1px solid ;margin: 3px">
+					<div style="padding-right: 13px; margin-top: 6px;">
+						<div class="d-flex justify-content-between" style="margin-bottom: 10px">
+							<div class="ps-3 pt-3">
+								<div style="font-weight: bold; font-size: 15px; cursor: pointer;" onclick="location.href='${contextPath}/band/${bandRoomId }/album/total'"
+										>전체사진 <span style="color: #B2B2B2; font-size: 14px">${cntTotalImage }</span></div>
+								<div style="font-size: 11px; color: #73777B;">${now }</div>
 							</div>
-							<div class="pe-3 pt-2">
-								<input type="hidden" value="${one.albumId }"/>
-								<input type="hidden" value="${one.albumTitle }"/>
-								<button type="button" data-bs-toggle="modal" data-bs-target="#albumImageUpload"
-										style="border: none; background-color: white;" class="albumAddImageButton">
+							<div class="pe-3 pt-3">
+								<button type="button" data-bs-toggle="modal" data-bs-target="#imageUpload"
+										style="border: none; background-color: white;">
 									<i class="bi bi-plus-lg"></i>
 								</button>
 							</div>
 						</div>
-						<ul class="row row-cols-3" style="list-style: none; padding-left: 12px; margin-bottom: 0; width: 102%">
-							<c:forEach var="two" items="${imageList }">
+						<div class="row row-cols-3" style="margin-left: 10px;width: 100%">
+							<c:forEach var="one" items="${imageList }" varStatus="status">
 								<c:choose>
-									<c:when test="${one.albumId eq two.imageAlbumId }">
-										<li class="p-1 col" style="width: 100px; height: 100px">
-											<a href="${contextPath }/band/${bandRoomId}/album/${two.imageAlbumId}">
-												<img alt="앨범사진" src="${contextPath }${two.imageUrl}" width="100%" height="100%">
-											</a>
-										</li>
+									<c:when test="${status.last }">
+										<div class="col lb-wrap" style="width: 190px; height: 190px; padding: 0.1rem">									
+											<a href="${contextPath }/band/${bandRoomId}/album/total">
+												<img class="lb-image" alt="전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
+												<c:if test="${cntTotalImage gt 4 }">
+													<span class="lb-text" style="width: 185px; height: 188px; padding-top: 80px;">더보기 +</span>
+												</c:if>
+											</a>									
+										</div>
 									</c:when>
-								</c:choose>
-							</c:forEach>
-						</ul>	
+									<c:otherwise>
+										<div class="col" style="width: 190px; height: 190px;padding: 0.1rem">
+											<a href="${contextPath }/band/${bandRoomId}/album/total">
+												<img alt="전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
+											</a>
+										</div>
+									</c:otherwise>
+								</c:choose>										
+							</c:forEach>				
+						</div>	
 					</div>
-				</c:forEach>
-			</div>		
-		</div>
-		
-		
-		
-		
-		<div class="pb-3 ms-3" style="min-width: 208px;">
+					<hr style="color: #BFCFE7; border: 1px solid">
+					<div>
+						<div class="d-flex justify-content-between">
+							<div class="ps-3 pt-3">
+								<div style="font-weight: bold; font-size: 15px">앨범</div>
+							</div>
+							<div class="pe-3 pt-3">업데이트순!!(수정)</div>
+						</div>
+					</div>
+					<div class="ps-3 pe-3">	
+						<c:forEach var="one" items="${albumList }">
+							<div style="border: 1px solid #B2B1B9; margin-top: 20px">
+								<div class="d-flex justify-content-between pt-2 mb-2" >
+									<div class="ps-3 pt-1">
+										<a href="${contextPath }/band/${bandRoomId}/album/${one.albumId}" >
+										<div style="font-weight: bold; font-size: 15px">${one.albumTitle }</div></a>
+										<div style="font-size: 11px; color: #B2B1B9;">${now }</div>
+									</div>
+									<div class="pe-3 pt-2">
+										<input type="hidden" value="${one.albumId }"/>
+										<input type="hidden" value="${one.albumTitle }"/>
+										<button type="button" data-bs-toggle="modal" data-bs-target="#albumImageUpload"
+												style="border: none; background-color: white;" class="albumAddImageButton">
+											<i class="bi bi-plus-lg"></i>
+										</button>
+									</div>
+								</div>
+								<ul class="row row-cols-3" style="list-style: none; padding-left: 12px; margin-bottom: 0; width: 102%">
+									<c:forEach var="two" items="${albumImageList }">
+										<c:choose>
+											<c:when test="${one.albumId eq two.imageAlbumId }">
+											
+												<li class="p-1 col" style="width: 100px; height: 100px">
+													<a href="${contextPath }/band/${bandRoomId}/album/${two.imageAlbumId}">
+														<img alt="앨범사진" src="${contextPath }${two.imageUrl}" width="100%" height="100%">
+													</a>
+												</li>
+											
+											</c:when>
+										</c:choose>
+									</c:forEach>
+								</ul>	
+							</div>
+						</c:forEach>
+					</div>		
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="min-width: 500px; background-color: white">
+					<div style="height: 547px; position: relative; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#joinBandModal">
+						<div style="position : absolute;top : 50%; left: 45%;margin: -50px 0 0 -50px">
+							<div style="text-align: center">
+								<div style="font-size: 35px"><i class="bi bi-door-open"></i></div>
+								<div>멤버만 볼 수 있습니다.</div>
+								<div style="font-size: 13px">밴드에 가입해보세요!</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:otherwise>
+		</c:choose>
+		<!-- 3 -->
+		<div class="pb-3 ms-3 sticky-top" style="min-width: 208px;">
 			<div>다가오는 일정</div>
 			<div>채팅</div>
 			<div>파일</div>
 			<div>최근 사진</div>
 		</div>
 	</div>
-	
+</div>
+	<!-- ============================================================================================================================== -->
 	
 	<!-- 전체사진 image upload modal -->
 		
@@ -302,7 +319,7 @@
 				            <div>
 				           		<div style="font-size: 13px;" class="mb-2">앨범 선택하기</div>
 			          			<div>
-						            <select class="form-select" aria-label="Default select example" id="selectAlbum">
+						            <select class="form-select" aria-label="Default select example" id="selectedAlbumId">
 									  <option style="font-size: 13px" selected value="" id="selectAlbumName"></option>
 									  <option style="font-size: 13px" value="0">앨범 지정하지 않음</option>
 									  <c:forEach var="albumname" items="${albumList }">
@@ -344,7 +361,7 @@
 			            사진을 올려서 보관! 사진UP!<br/>
 			            함께 찍은 사진을 모아보세요
 			          </div>
-			         <form id="form" action="${contextPath }/band/ACA07E9B/album" method="post">
+			         <form id="form" action="${contextPath }/band/${bandRoomId }/album" method="post">
 			         <input type="hidden" value="" name="confirm" id="confirm"/>
 			          <div class="mb-3">
 			            <input type="text" id="albumname" name="albumname" style="width: 100%; height:38px ;border: 1px solid #E2E2E2;"/>
@@ -398,7 +415,7 @@
 	<script>
 		// 특정앨범 사진 추가 시 앨범ID 넘기기
 		document.querySelector('#addAlbumImageButton').onclick = function(e){
-			document.querySelector("#albumId").value = document.querySelector("#selectAlbumId").value;
+			document.querySelector("#albumId").value = document.querySelector("#selectedAlbumId").value;
 			//console.log(document.querySelector("#selectAlbumId").value);
 			//console.log(document.querySelector("#albumId").value);
 		}
@@ -432,7 +449,7 @@
 				fileReader.readAsDataURL(file);
 				fileReader.onload = function(e){
 					const div = document.createElement("div");
-					div.className = "p-1 col";
+					div.className = "p-1 col rounded position-relative";
 					
 					const img = document.createElement("img");
 					img.src = e.target.result;
@@ -441,11 +458,22 @@
 					img.className = "object-fit-cover";
 					div.appendChild(img);
 					
+			
 					const button = document.createElement("button");
 					button.type = "button";
-				    button.className = "btn-close top-0 end-0";
+				    button.className = "position-absolute top-0 end-0";
 					button.ariaLabel = "Close";
+					button.style.border = "none";
+					button.style.backgroundColor = "transparent";
+					button.style.padding = 0;
+					button.style.paddingTop = "5px";				
+					button.style.margin = 0;
 					div.appendChild(button);
+				
+					const i = document.createElement("i");
+					i.className = "bi bi-x-circle";
+					i.style.color = "white";
+					button.appendChild(i);
 					
 					button.onclick = function() {
 						document.querySelector("#imageView").removeChild(this.parentNode);
@@ -467,7 +495,7 @@
 				fileReader.readAsDataURL(file);
 				fileReader.onload = function(e){
 					const div = document.createElement("div");
-					div.className = "p-1 col";
+					div.className = "p-1 col rounded position-relative";
 					
 					const img = document.createElement("img");
 					img.src = e.target.result;
@@ -478,9 +506,19 @@
 					
 					const button = document.createElement("button");
 					button.type = "button";
-				    button.className = "btn-close top-0 end-0";
+				    button.className = "position-absolute top-0 end-0";
 					button.ariaLabel = "Close";
+					button.style.border = "none";
+					button.style.backgroundColor = "transparent";
+					button.style.padding = 0;
+					button.style.paddingTop = "5px";				
+					button.style.margin = 0;
 					div.appendChild(button);
+				
+					const i = document.createElement("i");
+					i.className = "bi bi-x-circle";
+					i.style.color = "white";
+					button.appendChild(i);
 					
 					button.onclick = function() {
 						document.querySelector("#albumImageView").removeChild(this.parentNode);

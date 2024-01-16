@@ -18,10 +18,12 @@
 </head>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
 <body>
-	<div style="background-color: black; height: 40px; font-size: 14px;">
+
+<div style="background-color: #F0F0F0;">
+	<div class="sticky-top" style="background-color: black; height: 40px; font-size: 14px;">
 		<ul class="nav justify-content-center gap-5 nav-underline" >
 		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">게시글</a>
+		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a>
@@ -38,14 +40,13 @@
 		</ul>
 	</div>	
 
-	<div class="container-lg d-flex align-items-start mt-3">
-		<div class="pb-3 me-3" style="width: 208px; height: 157px;">
+	<div class="mx-auto d-flex align-items-start pt-3" style="width: 1034px;">
+		<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
 			<!-- 
 			<img src="${fn:startsWith(bandRoom.coverImageUrl, '/band/upload') ? contextPath:'' }${bandRoom.coverImageUrl }" alt="커버사진"
 				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
 			 -->
-			 <img src="${contextPath }/resource/bandIcon/1.jpg" alt="커버사진"
-				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
+			 <img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 			<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 			<div class="mt-2">
 				멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대
@@ -71,26 +72,20 @@
 			</div>
 		</div>
 		
-		
-		
-		
-		<div class="flex-grow-1 flex-column" style="min-width: 500px;">
-			
-				<div class="d-flex justify-content-between" style=" height: 65px">
+		<!-- 2 -->
+		<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="min-width: 500px; background-color: white">	
+				<div class="d-flex justify-content-between sticky-top" style=" height: 65px; background-color: white">
 					<div class="ps-3 pt-4">
 						<span style="font-weight: bold; font-size: 17px">전체 사진 <span style="color: blue">${cntTotalImage }</span></span>
 					</div>
-					<div class="pe-3 pt-3">
-					<form action="" method="post" enctype="multipart/form-data" >
-						<input type="file" id="albumImages" multiple="multiple" style="display: none;"/>
+					<div class="pe-3 pt-3">			
 						<button id="" type="button" data-bs-toggle="modal" data-bs-target="#imageUpload"
-									 style="border: 1px solid #272829;  width: 100px; height: 35px; font-size: 13px">
+									 style="border: 1px solid #272829;  width: 100px; height: 35px; font-size: 13px; background-color: white">
 							사진 올리기
-						</button>
-					</form>
+						</button>			
 					</div>
 				</div>
-				<hr style="margin: 3px"/>
+				<hr style="color: #BFCFE7; border: 1px solid ;margin: 3px"/>
 				<div class="d-flex justify-content-between shadow-sm bg-body-tertiary" style="margin-top: 6px; padding-bottom: 6px">
 					<div style="font-size: 13px" class="ps-3">
 						최신순 보기(구현전)
@@ -100,45 +95,52 @@
 							관리
 						</button>
 						<div style="display: none;" id="hiddenButton">
-							<button style="font-size: 13px; border: none">
+							<button style="font-size: 13px; border: none" id="saveImage">
 								저장
 							</button>
-							<button style="font-size: 13px; border: none">
+							<button style="font-size: 13px; border: none" id="deleteImage">
 								삭제
 							</button>
 						</div>
 					</div>
 				</div>
-				<div class="row row-cols-3" style="margin-left: 10px;width: 99%; margin-top: 18px">
-					<c:forEach var="one" items="${imageList}">
-						<div class="p-1 col" style="width: 164px; height: 164px">
-							<img alt="해당밴드전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
-						</div>
-					
-					</c:forEach>
-				</div>
-				<div class="d-flex sticky-bottom" id="stickyBottom" style="background-color: rgb(255,255,255,0.9); display: none;">
-					<div class="p-2" style="width: 85%;font-size: 13px">
-						<span style="color: blue">0장</span>의 사진을 선택하였습니다.
+				<form action="${contextPath }/band/${bandRoomId}/wholeImage/control" method="post" id="control">
+				<input type="hidden" name="type" value="delete" id="type"/>
+					<div class="row row-cols-3" style="margin-left: 10px;width: 99%; margin-top: 18px">
+						<c:forEach var="one" items="${imageList}">
+							<div class="col position-relative" style="width: 190px; height: 190px; padding: 0.1rem">
+								<img alt="해당밴드전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
+								<input class="position-absolute top-0 end-0" type="checkbox" id="checkInput" name="checkInput" value="${one.imageId}"style="margin-top: 8px; margin-right: 8px; display: none"/>
+								<input type="hidden" name="memberId" value="${one.imageMemberId }"/>
+							</div>
+						
+						</c:forEach>
 					</div>
-					<div class="p-2 flex-shrink-1">
-						<button type="button" id="exitManage" style="border: none; font-size: 13px">
-							나가기
-						</button>
+				</form>
+				<div style="display: none;" id="stickyBottom" class="sticky-bottom">
+					<div class="d-flex" style="background-color: rgb(255,255,255,0.9);">
+						<div class="p-2" style="width: 85%;font-size: 13px">
+							<span style="color: blue" id="imageCnt">0</span>장의 사진을 선택하였습니다.
+						</div>
+						<div class="p-2 flex-shrink-1">
+							<button type="button" id="exitManage" style="border: none; font-size: 13px">
+								나가기
+							</button>
+						</div>
 					</div>
 				</div>
 		</div>
 		
 		
 		
-		<div class="pb-3 ms-3" style="min-width: 208px;">
+		<div class="pb-3 ms-3 sticky-top" style="min-width: 208px;">
 			<div>다가오는 일정</div>
 			<div>채팅</div>
 			<div>파일</div>
 			<div>최근 사진</div>
 		</div>
 	</div>
-	
+</div>
 	<!-- 전체사진 image upload modal -->
 		
 		<div class="modal fade" id="imageUpload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -224,10 +226,44 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	
 	<script>
+	
+		document.querySelector("#deleteImage").onclick = function(e){
+			document.querySelector("#control").submit();
+		}
+		
+		document.querySelector("#saveImage").onclick = function(e){
+			document.querySelector("#type").value = "save";
+			console.log(document.querySelector("#type").value);
+			document.querySelector("#control").submit();
+		}
+		
+		const list = document.querySelectorAll('#checkInput');
+		let cnt = 0;
+		list.forEach(function(e){
+			e.onclick = function(evt){
+				if(e.checked == true){
+					cnt++;
+					document.querySelector("#imageCnt").innerHTML = cnt;
+				}else{
+					cnt--;
+					document.querySelector("#imageCnt").innerHTML = cnt;
+				}
+
+				
+			}
+
+		})
+	
+	
 		document.querySelector("#manageButton").onclick = function(e){			
 			document.querySelector("#manageButton").style.display = 'none';
 			document.querySelector("#hiddenButton").style.display = 'block';
 			document.querySelector("#stickyBottom").style.display = 'block';
+			
+			list.forEach(function(e){
+				e.style.display = 'block';
+			});
+			
 			
 		}
 		
@@ -235,7 +271,15 @@
 			document.querySelector("#manageButton").style.display = 'block';
 			document.querySelector("#hiddenButton").style.display = 'none';
 			document.querySelector("#stickyBottom").style.display = 'none';
+			document.querySelector("#imageCnt").innerHTML = 0;
+			cnt = 0;
+			list.forEach(function(evt){
+				evt.checked = false;
+			})			
 			
+			list.forEach(function(e){
+				e.style.display = 'none';
+			});
 		}
 		
 		//전체사진첩에 사진 추가
@@ -249,7 +293,7 @@
 				fileReader.readAsDataURL(file);
 				fileReader.onload = function(e){
 					const div = document.createElement("div");
-					div.className = "p-1 col";
+					div.className = "p-1 col rounded position-relative";
 					
 					const img = document.createElement("img");
 					img.src = e.target.result;
@@ -260,9 +304,19 @@
 					
 					const button = document.createElement("button");
 					button.type = "button";
-				    button.className = "btn-close top-0 end-0";
+				    button.className = "position-absolute top-0 end-0";
 					button.ariaLabel = "Close";
+					button.style.border = "none";
+					button.style.backgroundColor = "transparent";
+					button.style.padding = 0;
+					button.style.paddingTop = "5px";				
+					button.style.margin = 0;
 					div.appendChild(button);
+				
+					const i = document.createElement("i");
+					i.className = "bi bi-x-circle";
+					i.style.color = "white";
+					button.appendChild(i);
 					
 					button.onclick = function() {
 						document.querySelector("#imageView").removeChild(this.parentNode);
@@ -272,6 +326,9 @@
 				}	
 			});		
 		}
+		
+		
+		
 	</script>
 </body>
 </html>

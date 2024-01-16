@@ -37,7 +37,7 @@
 		<div class="mx-auto d-flex align-items-start pt-3 " style="width: 1034px;">
 			<!-- 1 -->
 			<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
-				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="min-width: 208px; min-height: 157px; background-color: white;" class="rounded-1">
+				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 				<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 				<div class="mt-2">
 					멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대

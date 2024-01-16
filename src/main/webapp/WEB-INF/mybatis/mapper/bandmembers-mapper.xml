@@ -19,10 +19,32 @@
 		</association>
 	</resultMap>
 	
+	<resultMap type="bandMember" id="ForIndex">
+  		<result column="member_bandroom_id" property="memberBandRoomId"/>
+  		<result column="member_id" property="memberId"/>
+  		<association property="bandRoom">
+  			<result column="bandroom_name" property="bandRoomName"/>
+  			<result column="cover_image_url" property="coverImageUrl"/> 		
+  		</association>
+  	</resultMap>
+	
 	<insert id="saveMember">
-		insert into bandmembers values(bandmembers_seq.nextval, #{memberBandRoomId}, #{memberUserId}, #{memberProfileId}, #{memberStatus})
+		<selectKey order="BEFORE" keyProperty="memberId" resultType="int">SELECT bandmembers_seq.nextval FROM DUAL</selectKey>
+		insert into bandmembers values(#{memberId}, #{memberBandRoomId}, #{memberUserId}, #{memberProfileId}, #{memberStatus})
 	</insert>
 	
+	<select id="findBandRoomsByMemberId" resultMap="ForIndex">
+  		select a.*
+		      ,b.bandroom_name
+		      ,b.cover_image_url
+		    from 
+		    (select m.member_bandroom_id
+		          ,m.member_id
+		          from bandmembers m where member_user_id = #{userId}) a 
+		          						join bandrooms b on a.member_bandroom_id = b.bandroom_id 
+  	</select>
+  	
+
 	<select id="findByRoomIdAndUserId" resultType="bandMember">
 		select * from bandmembers where member_bandroom_id = #{memberBandRoomId} and member_user_id = #{memberUserId} 
 	</select>

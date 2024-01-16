@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
+import org.edupoll.band.dao.ProfileDao;
 import org.edupoll.band.model.BandMember;
 import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.CreatBandRoom;
@@ -36,6 +37,7 @@ public class BandSignController {
 
 	private final BandRoomDao bandRoomDao;
 	private final BandMemberDao bandMemberDao;
+	private final ProfileDao profileDao;
 
 	@PostMapping("/{bandRoomId}/request")
 	public String proceedBandSign(@SessionAttribute User logonUser, @PathVariable String bandRoomId,
@@ -112,7 +114,7 @@ public class BandSignController {
 	@PostMapping("/band-create")
 
 	public String createBandRoom(
-								@ModelAttribute CreatBandRoom createBandRoom 
+								@ModelAttribute CreatBandRoom createBandRoom ,@SessionAttribute User logonUser
 								,@RequestParam String coverImageUrl ,Model model) throws IllegalStateException, IOException {
 		
 		String uuid = UUID.randomUUID().toString();
@@ -134,7 +136,9 @@ public class BandSignController {
 			File target = new File(dir, "img.jpg");
 			createBandRoom.getBandimage().transferTo(target);
 		}
-
+		
+		
+		// 밴드룸 insert
 		BandRoom one = BandRoom.builder().bandRoomId(uuids[0].toUpperCase()) //
 				.bandRoomName(createBandRoom.getBandRoomName()) //
 				.coverImageUrl(imageUrl) //
@@ -142,8 +146,25 @@ public class BandSignController {
 				.type(createBandRoom.getType()) //
 				.build();
 
-		int x = bandRoomDao.saveBandroom(one);
+		bandRoomDao.saveBandroom(one);
 		// System.out.println("밴드룸생성 결과--> "+x);
+		
+		// User로 profile을 찾아서 0번째
+		List<Profile> profile = profileDao.findProfileById(logonUser.getUserId());
+		// 밴드멤버 insert
+		BandMember member = BandMember.builder()
+							.memberBandRoomId(one.getBandRoomId())
+							.memberUserId(logonUser.getUserId())
+							.memberProfileId(profile.get(0).getProfileId())
+							.memberStatus("accept").build();
+		
+		bandMemberDao.saveMember(member);
+		//one.setLeader(member.getMemberId());
+		
+		Map<String, Object> roomMap = new HashMap<String, Object>();
+		roomMap.put("bandRoomId", one.getBandRoomId());
+		roomMap.put("leader", member.getMemberId());
+		bandRoomDao.update(roomMap);
 
 		return "redirect:/band/" + one.getBandRoomId();
 	}

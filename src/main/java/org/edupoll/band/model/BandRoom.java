@@ -18,7 +18,7 @@ public class BandRoom {
 	private String bandRoomId;
 	private String bandRoomName;
 	private Date bandRoomMakeAt;
-	private int leader;
+	private Integer leader;
 	private String bandRoomDescription;
 	private String coverImageUrl;
 	private String bandRoomColor;

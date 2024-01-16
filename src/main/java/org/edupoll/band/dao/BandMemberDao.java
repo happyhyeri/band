@@ -17,4 +17,7 @@ public interface BandMemberDao {
 	public int countMembers(String bandRoomId);
 	
 	public List<BandMember> findRequestByRoomId(String bandRoomId);
+	
+	public List<BandMember> findBandRoomsByMemberId(String userId);
+	
 }

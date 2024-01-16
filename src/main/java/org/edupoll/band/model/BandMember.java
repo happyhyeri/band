@@ -17,6 +17,8 @@ public class BandMember {
 	private String memberUserId;
 	private int memberProfileId;
 	private String memberStatus;
+	private int cnt;
 	
 	private Profile profile;
+	private BandRoom bandRoom;
 }

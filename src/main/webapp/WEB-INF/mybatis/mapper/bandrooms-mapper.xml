@@ -4,16 +4,46 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="org.edupoll.band.dao.BandRoomDao">
-  	
+  
+	
   	<insert id="saveBandroom">
   		INSERT INTO BANDROOMS 
   		(BANDROOM_ID,BANDROOM_NAME,BANDROOM_MAKE_AT,COVER_IMAGE_URL,BANDROOM_COLOR,TYPE)
   		VALUES
-  		(#{bandRoomId}, #{bandRoomName}, sysdate, #{coverImageUrl}, #{bandRoomColor}, #{type})
+  		(#{bandRoomId}, #{bandRoomName}, sysdate , #{coverImageUrl}, #{bandRoomColor}, #{type})
   	</insert>
-  	
+  	 	
   	<select id="findByBandRoomId" resultType="bandroom">
   		SELECT * FROM BANDROOMS WHERE BANDROOM_ID = #{bandRoomId}
+  	</select>
+  	
+  	<update id="update">
+  		UPDATE BANDROOMS
+  		<set>
+  			<if test="bandRoomName != null">
+  				BANDROOM_NAME = #{bandRoomName},
+  			</if>
+  			<if test="leader != null">
+  				LEADER = #{leader},
+  			</if>
+  			<if test="bandRoomDescription != null">
+  				BANDROOM_DESCRIPTION = #{bandRoomDescription},
+  			</if>
+  			<if test="coverImageUrl != null">
+  				COVER_IMAGE_URL = #{coverImageUrl},
+  			</if>
+  			<if test="bandRoomColor != null">
+  				BANDROOM_COLOR = #{bandRoomColor},
+  			</if>
+  			<if test="type != null">
+  				TYPE = #{type},
+  			</if>
+  		</set>
+  		WHERE BANDROOM_ID = #{bandRoomId}
+  	</update>
+  	
+  	<select id="findLeader" resultType="integer">
+  		select leader from bandrooms where bandroom_id = #{bandRoomId}
   	</select>
   	
   </mapper>

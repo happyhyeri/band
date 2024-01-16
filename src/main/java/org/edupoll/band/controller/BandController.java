@@ -9,20 +9,19 @@ import java.util.Map;
 import org.edupoll.band.dao.AlbumDao;
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
+import org.edupoll.band.dao.ImageDao;
 import org.edupoll.band.dao.PostDao;
 import org.edupoll.band.dao.ProfileDao;
-import org.edupoll.band.model.Post;
-import org.edupoll.band.model.Profile;
-import org.edupoll.band.dao.ImageDao;
 import org.edupoll.band.model.Album;
 import org.edupoll.band.model.BandMember;
 import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.Image;
+import org.edupoll.band.model.Post;
+import org.edupoll.band.model.Profile;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,42 +72,61 @@ public class BandController {
 
 	// 사진첩 메인
 	@GetMapping("/band/{bandRoomId}/album")
-	public String showAlbum(@PathVariable String bandRoomId, Model model) {
+	public String showAlbum(@PathVariable String bandRoomId,
+							@SessionAttribute(required = false) User logonUser ,Model model) {
+		
 		Date now = new Date(System.currentTimeMillis());
 		SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy년 MM월");
 		String nowdate = simpleformat.format(now);
 
 		// 앨범 전체가지고오기
 		List<Album> albumList = albumDao.findByBandRoomId(bandRoomId);
-
+		
 		// 이미지 전채개수
 		int cntTotalImage = imageDao.countImageTotal(bandRoomId);
 		model.addAttribute("cntTotalImage", cntTotalImage);
 		
 		// 전체 사진가지고오기(4개만)
-		List<Image> imageList = imageDao.findImageByBandRoomIdToFour(bandRoomId);
+		List<Image> imageList = imageDao.findImageByBandRoomIdToSix(bandRoomId);
+		
+		// 해당앨범 사진가지고오기(4개만)
+		
+		List<Image> albumImageList = imageDao.findAllByBandRoomId(bandRoomId);
+
 		BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
 
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("imageList", imageList);
-		model.addAttribute("bandroom", bandRoom);
+		model.addAttribute("albumImageList", albumImageList);
+		model.addAttribute("bandRoom", bandRoom);
 		model.addAttribute("now", nowdate);
+		model.addAttribute("logonUser", logonUser);
+		
 		return "band/album";
 	}
 
 	// 앨범 생성
 	@PostMapping("/band/{bandRoomId}/album")
-	public String createAlbum(@PathVariable String bandRoomId, 
+	public String createAlbum(@PathVariable String bandRoomId,@SessionAttribute User logonUser ,
 							  @RequestParam String albumname,@RequestParam String confirm
 							  ,Model model) {
-		System.out.println("albumname---> "+albumname);
-		System.out.println("bandRoomId---> "+bandRoomId);
-		System.out.println("confirm---> "+confirm);
+//		System.out.println("albumname---> "+albumname);
+//		System.out.println("bandRoomId---> "+bandRoomId);
+//		System.out.println("confirm---> "+confirm);
+		Map<String, Object> memberMap = new HashMap<>();
+		memberMap.put("memberBandRoomId", bandRoomId);
+		memberMap.put("memberUserId", logonUser.getUserId());
 		
-		
+		BandMember member = bandMemberDao.findByRoomIdAndUserId(memberMap);
 		
 		if(confirm.equals("true")) {
 			//게시글로 등록 후 앨범상세페이지로 이동
+			Post post = Post.builder()
+						.content("["+albumname+"] 앨범을 만들었습니다.")
+						.postMemberId(member.getMemberId())
+						.postBandRoomId(bandRoomId)
+						.build();
+			postDao.savePost(post);
 		}
 		Album one = Album.builder().albumBandRoomId(bandRoomId).albumTitle(albumname).build();
 		albumDao.saveAlbum(one);
@@ -128,6 +146,10 @@ public class BandController {
 		List<Image> albumAllImages = imageDao.findAllByAlbumId(albumId);
 		model.addAttribute("albumAllImages", albumAllImages);
 		
+		// 앨범 전체가지고오기
+		List<Album> albumList = albumDao.findByBandRoomId(bandRoomId);
+		model.addAttribute("albumList", albumList);
+		
 		int cntAlbumTotal = imageDao.countImageAlbumTotal(albumId);
 		model.addAttribute("cntAlbumTotal", cntAlbumTotal);
 		
@@ -140,6 +162,9 @@ public class BandController {
 	// 앨범 전체사진 디테일 창
 		@GetMapping("/band/{bandRoomId}/album/total")
 		public String showAlbumTotalDetail(@PathVariable String bandRoomId, Model model) {
+			
+			BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
+			model.addAttribute("bandRoom", bandRoom);
 			
 			// 앨범 전체가지고오기
 			List<Album> albumList = albumDao.findByBandRoomId(bandRoomId);
