@@ -30,10 +30,10 @@ public class UserInfoController {
 
 	@Value("${upload.profileImage.dir}")
 	String uploadProfileImageDir;
-	
+
 	private final UserDao userDao;
 	private final ProfileDao profileDao;
-	
+
 	@ModelAttribute("profileImageUrl")
 	public String findProfileImageUrl(@SessionAttribute User logonUser) {
 		User user = userDao.findUserById(logonUser.getUserId());
@@ -41,71 +41,71 @@ public class UserInfoController {
 		return profiles.get(0).getProfileImageUrl();
 	}
 
+	// 내정보
 	@GetMapping
-	public String showMyProfile (@SessionAttribute User logonUser, Model model) {
+	public String showMyProfile(@SessionAttribute User logonUser, Model model) {
 		List<Profile> one = profileDao.findProfileById(logonUser.getUserId());
-		
+
 		Profile p = one.get(0);
 
-		model.addAttribute("profile",p);
-		model.addAttribute("profileImgUrl",p.getProfileImageUrl());
-		
+		model.addAttribute("profile", p);
+		model.addAttribute("profileImgUrl", p.getProfileImageUrl());
+
 		User user = userDao.findUserById(logonUser.getUserId());
-		model.addAttribute("findUser",user);
-		
-		
-		
+		model.addAttribute("findUser", user);
+
 		return "mypage/mypageForm";
 	}
-	
-	
+
+	// 내정보 수정
 	@PostMapping("/imageNickname")
-	public String updateImgFileNickname(@ModelAttribute UpdateUserInfo updateUserInfo, @SessionAttribute User logonUser, HttpSession session ,Model model) throws IllegalStateException, IOException {
-		
-	
-	if(!updateUserInfo.getProfileImage().isEmpty()) {
-		File dir = new File(uploadProfileImageDir, logonUser.getUserId());
-		dir.mkdirs();
-		
-		File target = new File(dir, "img.jpg"); 
-		
-		updateUserInfo.getProfileImage().transferTo(target);
-		
-		Profile profile = Profile.builder().profileUserId(logonUser.getUserId()).profileImageUrl("/band/upload/profileImage/"+logonUser.getUserId()+"/img.jpg").profileNickName(updateUserInfo.getNickname()).build();
+	public String updateImgFileNickname(@ModelAttribute UpdateUserInfo updateUserInfo, @SessionAttribute User logonUser,
+			HttpSession session, Model model) throws IllegalStateException, IOException {
+
+		if (!updateUserInfo.getProfileImage().isEmpty()) {
+			File dir = new File(uploadProfileImageDir, logonUser.getUserId());
+			dir.mkdirs();
+
+			File target = new File(dir, "img.jpg");
+
+			updateUserInfo.getProfileImage().transferTo(target);
+
+			Profile profile = Profile.builder().profileUserId(logonUser.getUserId())
+					.profileImageUrl("/band/upload/profileImage/" + logonUser.getUserId() + "/img.jpg")
+					.profileNickName(updateUserInfo.getNickname()).build();
+			profileDao.profileUpdate(profile);
+
+			model.addAttribute("profileImgUrl", profile.getProfileImageUrl());
+			List<Profile> pf = profileDao.findProfileById(profile.getProfileUserId());
+			Profile p = pf.get(0);
+			System.out.println(p);
+			User one = userDao.findUserById(logonUser.getUserId());
+			one.setProfile(p);
+
+			session.setAttribute("logonUser", one);
+
+			return "redirect:/my/profile";
+
+		}
+
+		Profile profile = Profile.builder().profileUserId(logonUser.getUserId())
+				.profileNickName(updateUserInfo.getNickname()).build();
 		profileDao.profileUpdate(profile);
-		
-		model.addAttribute("profileImgUrl",profile.getProfileImageUrl());
-		List<Profile> pf = profileDao.findProfileById(profile.getProfileUserId());
-		Profile p = pf.get(0);
-		System.out.println(p);
-		User one = userDao.findUserById(logonUser.getUserId());
-		one.setProfile(p);
-		
-		session.setAttribute("logonUser",one);
-		
+
 		return "redirect:/my/profile";
-		
 	}
-	
-		Profile profile = Profile.builder().profileUserId(logonUser.getUserId()).profileNickName(updateUserInfo.getNickname()).build();
-		profileDao.profileUpdate(profile);
-	
-	
-	return "redirect:/my/profile";
-	}
-	
+
+	// 기본 수정
 	@PostMapping("/defaultChange")
-	public String updatedefaultChange(@RequestParam String phoneNumber,@SessionAttribute User logonUser, HttpSession session ,Model model) {
-		
+	public String updatedefaultChange(@RequestParam String phoneNumber, @SessionAttribute User logonUser,
+			HttpSession session, Model model) {
+
 		User user = userDao.findUserById(logonUser.getUserId());
 		user.setPhoneNumber(phoneNumber);
 		userDao.userUpdate(user);
-		session.setAttribute("logonUser",user);
-		
+		session.setAttribute("logonUser", user);
+
 		return "redirect:/my/profile";
 	}
-	
-	
-
 
 }

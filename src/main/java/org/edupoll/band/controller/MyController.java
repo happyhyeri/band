@@ -30,6 +30,7 @@ public class MyController {
 	private final PostDao postDao;
 	private final BandRoomDao bandRoomDao;
 
+	// 내가 쓴 글
 	@GetMapping("/post")
 	public String showMyPost(@SessionAttribute User logonUser, Model model) {
 

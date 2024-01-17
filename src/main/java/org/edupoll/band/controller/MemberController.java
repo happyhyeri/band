@@ -52,6 +52,7 @@ public class MemberController {
 		return scheduleDao.findNextSchedule();
 	}
 	
+	// 가입신청
 	@PostMapping("/{bandRoomId}/request")
 	public String proceedBandSign(@SessionAttribute User logonUser, @PathVariable String bandRoomId,
 			@RequestParam int profileId) {
@@ -79,6 +80,7 @@ public class MemberController {
 		return "redirect:/band/" + bandRoomId; // 가입신청한 밴드룸으로
 	}
 
+	// 가입신청 목록
 	@GetMapping("/{bandRoomId}/applications")
 	public String showRequests(@SessionAttribute(required = false) User logonUser, @PathVariable String bandRoomId,
 			Model model) {
@@ -101,6 +103,7 @@ public class MemberController {
 		return "band/applications";
 	}
 
+	// 가입신청 수락/거절
 	@PostMapping("/{bandRoomId}/applications")
 	@ResponseBody
 	public String proceedAccept(@SessionAttribute User logonUser, @PathVariable String bandRoomId,
@@ -118,6 +121,7 @@ public class MemberController {
 		return gson.toJson(response);
 	}
 
+	// 멤버 목록
 	@GetMapping("/{bandRoomId}/member")
 	public String showMember(@SessionAttribute(required = false) User logonUser, @PathVariable String bandRoomId,
 			Model model) {

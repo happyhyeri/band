@@ -44,6 +44,7 @@ public class BandSignController {
 		return profiles.get(0).getProfileImageUrl();
 	}
 
+	// 밴드룸 생성폼
 	@GetMapping("/band-create")
 	public String showFormForBandCerate(@SessionAttribute User logonUser, Model model) {
 		User user = userDao.findUserById(logonUser.getUserId());
@@ -53,6 +54,7 @@ public class BandSignController {
 		return "band/band-create";
 	}
 
+	// 밴드룸 생성
 	@PostMapping("/band-create")
 
 	public String createBandRoom(@ModelAttribute CreatBandRoom createBandRoom, @SessionAttribute User logonUser,

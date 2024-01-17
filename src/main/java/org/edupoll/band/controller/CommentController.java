@@ -25,6 +25,7 @@ public class CommentController {
 
 	private final CommentDao commentDao;
 
+	// 댓글 찾기
 	@GetMapping(value = "/comment/get", produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String showComment(@RequestParam int postId) {
@@ -38,6 +39,7 @@ public class CommentController {
 		return gson.toJson(response);
 	}
 	
+	// 댓글 저장
 	@PostMapping(value = "/comment/add", produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String proceedCommentAdd(@ModelAttribute Comment comment) {

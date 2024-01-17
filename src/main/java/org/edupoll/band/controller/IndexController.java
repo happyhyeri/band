@@ -31,6 +31,7 @@ public class IndexController {
 	private final ProfileDao profileDao;
 	private final BandRoomDao bandRoomDao;
 	
+	// 로그인 O 메인페이지
 	@GetMapping("/index")
 	public String showShowIndex(@SessionAttribute(required = false) User logonUser, Model model) {
 		
@@ -61,6 +62,7 @@ public class IndexController {
 		return "index";
 	}
 	
+	// 로그인 X 메인페이지
 	@GetMapping("/indexhome")
 	public String showBandMain() {
 		

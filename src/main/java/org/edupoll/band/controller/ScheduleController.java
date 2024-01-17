@@ -52,6 +52,7 @@ public class ScheduleController {
 		return scheduleDao.findNextSchedule();
 	}
 
+	// 일정 페이지
 	@GetMapping("/{bandRoomId}/calendar")
 	public String showCalender(@RequestParam(required = false) String currentDate, @PathVariable String bandRoomId,
 			@SessionAttribute User logonUser, Model model) throws ParseException {
@@ -90,6 +91,7 @@ public class ScheduleController {
 		return "band/calendar";
 	}
 
+	// 일정 추가
 	@PostMapping("/schedule/add")
 	public String proceedScheduleAdd(@ModelAttribute Schedule schedule) {
 		scheduleDao.saveSchedule(schedule);

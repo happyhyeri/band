@@ -47,8 +47,9 @@ public class SignController {
 	@Value("${naver.client.secret}")
 	String naverClientSecret;
 
+	// 로그인 폼
 	@GetMapping("/auth/login_page")
-	public String showSign(@RequestParam(required =false) String userId, Model model) {
+	public String showSign(@RequestParam(required = false) String userId, Model model) {
 		// 카카오
 		String kakaoLoginLink = "https://kauth.kakao.com/oauth/authorize?";
 		kakaoLoginLink += "client_id=${client_id}&response_type=code";
@@ -69,29 +70,29 @@ public class SignController {
 		NaverLoginLink = NaverLoginLink.replace("${state}", "state");
 
 		model.addAttribute("NaverLoginLink", NaverLoginLink);
-		
+
 		model.addAttribute("userId", userId);
 
 		// 수기
 		return "signin";
 	}
-	
+
+	// 로그인 처리
 	@PostMapping("/auth/login_page")
-	public String proceedLogin(@ModelAttribute User user, @RequestParam String password, HttpSession session,  Model model) {
-		
+	public String proceedLogin(@ModelAttribute User user, @RequestParam String password, HttpSession session,
+			Model model) {
+
 		User foundUser = userDao.findUserById(user.getUserId());
-		
-		if(foundUser == null || !foundUser.getUserPassword().equals(password)) {
+
+		if (foundUser == null || !foundUser.getUserPassword().equals(password)) {
 			model.addAttribute("error", true);
 			return "signin";
 		}
-		
+
 		session.setAttribute("logonUser", foundUser);
 
-		return "redirect:/index"; //구분해줘야할듯 로그인 인덱스와
+		return "redirect:/index"; // 구분해줘야할듯 로그인 인덱스와
 	}
-	
-	
 
 	// 카카오 연동 로그인
 	@GetMapping("/callback/kakao")
@@ -174,12 +175,14 @@ public class SignController {
 		return "redirect:/index";
 	}
 
+	// 자체 회원가입 폼
 	@GetMapping("/auth/sign_up_form")
 	public String showRegister() {
 
 		return "register";
 	}
 
+	// 자체 회원가입
 	@PostMapping("/auth/sign_up_form")
 	public String proceedRegister(@ModelAttribute User user, @RequestParam String profileNickName,
 			@RequestParam String birthParam, Model model) {
@@ -189,9 +192,9 @@ public class SignController {
 			model.addAttribute("error", true);
 			return "/auth/sign_up_form";
 		}
-		
-		
-		String birthday = birthParam.substring(0,4) + "-" + birthParam.substring(4,6) + "-" + birthParam.substring(6,8);
+
+		String birthday = birthParam.substring(0, 4) + "-" + birthParam.substring(4, 6) + "-"
+				+ birthParam.substring(6, 8);
 		System.out.println(birthday);
 		Date b = Date.valueOf(birthday);
 
@@ -209,6 +212,7 @@ public class SignController {
 		return "redirect:/auth/login_page?userId=" + user.getUserId();
 	}
 
+	// 아이디 유효성검사
 	@GetMapping("/auth/sign_up_form/idcheck")
 	@ResponseBody
 	public String proceedIdAvailable(@RequestParam String userId, Model model) {
@@ -222,11 +226,12 @@ public class SignController {
 
 	}
 
+	// 전화번호 유효성 검사
 	@GetMapping("/auth/sign_up_form/phoneNumberCheck")
 	@ResponseBody
 	public String proceedPhoneNumberAvailable(@RequestParam String phoneNumber, Model model) {
 		String pattern = "(010|011|016|017|018|019)(.+)(.{4})";
-				
+
 		if (Pattern.matches(pattern, phoneNumber)) {
 			return "OK";
 		} else {
@@ -234,12 +239,13 @@ public class SignController {
 			return "NO";
 		}
 	}
-	
+
+	// 생일 유효성 검사
 	@GetMapping("/auth/sign_up_form/birthCheck")
 	@ResponseBody
 	public String proceedBirthAvailable(@RequestParam String birthParam, Model model) {
 		String pattern = "(19[0-9][0-9]|20\\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])";
-				
+
 		if (Pattern.matches(pattern, birthParam)) {
 			return "OK";
 		} else {
@@ -248,6 +254,7 @@ public class SignController {
 		}
 	}
 
+	// 로그아웃
 	@GetMapping("/signout")
 	public String proceedSignout(HttpSession session) {
 

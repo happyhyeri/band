@@ -36,6 +36,7 @@ public class PostController {
 	private final PostDao postDao;
 	private final ImageDao imageDao;
 
+	// 게시글 저장
 	@PostMapping("/post/add")
 	public String proceedAddPost(@ModelAttribute PostAdd postAdd, @SessionAttribute User logonUser)
 			throws IllegalStateException, IOException {
@@ -73,6 +74,7 @@ public class PostController {
 		return "redirect:/band/" + postAdd.getPostBandRoomId();
 	}
 
+	// 게시글 수정
 	@PostMapping("/post/update")
 	public String proceedUpdatePost(@ModelAttribute PostUpdate postUpdate) throws IllegalStateException, IOException {
 
@@ -125,6 +127,7 @@ public class PostController {
 		return "redirect:/band/" + post.getPostBandRoomId();
 	}
 
+	// 게시글 삭제
 	@DeleteMapping("/post/delete")
 	@ResponseBody
 	public String proceedDeletePost(@RequestParam int postId) {
