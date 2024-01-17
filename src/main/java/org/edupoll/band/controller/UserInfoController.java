@@ -33,6 +33,13 @@ public class UserInfoController {
 	
 	private final UserDao userDao;
 	private final ProfileDao profileDao;
+	
+	@ModelAttribute("profileImageUrl")
+	public String findProfileImageUrl(@SessionAttribute User logonUser) {
+		User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		return profiles.get(0).getProfileImageUrl();
+	}
 
 	@GetMapping
 	public String showMyProfile (@SessionAttribute User logonUser, Model model) {
@@ -45,6 +52,8 @@ public class UserInfoController {
 		
 		User user = userDao.findUserById(logonUser.getUserId());
 		model.addAttribute("findUser",user);
+		
+		
 		
 		return "mypage/mypageForm";
 	}

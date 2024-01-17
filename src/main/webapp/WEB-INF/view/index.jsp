@@ -77,7 +77,7 @@
 										type="button" data-bs-toggle="dropdown" aria-expanded="false"
 										style="width: 35px; height: 50px; background-color: transparent; border: none;">
 										<img
-											src="${fn:startsWith(profileImageUrl, '/resource') ? contextPath:'' }${profileImageUrl}"
+											src="${fn:startsWith(profileImageUrl, 'http') ? '':contextPath }${profileImageUrl}"
 											class="rounded-circle" alt="프로필" width="35" height="35">
 									</button>
 									<ul class="dropdown-menu">

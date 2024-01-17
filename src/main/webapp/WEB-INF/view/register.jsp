@@ -27,10 +27,10 @@
 	<c:set var="rootPath"
 			value="${pageContext.servletContext.contextPath }" />
 		<form action="${pageContext.servletContext.contextPath }/auth/sign_up_form" method="post">
-		<div class="container text-center">
+		<div class="container text-center" style="margin-top: 40px">
 			<h1 class="text-center">회 원 가 입</h1>
-				<div class="card mx-auto"  style="width: 40rem; height: 50rem ;">
-				  <div class="card-body" >
+				<div class="card mx-auto"   style="width: 500px; height: 570px; margin-top: 30px">
+				  <div class="card-body" style="padding-top: 30px" >
 					<h4>기본 정보 입력</h4>
 						
 						<div class="input-group mb-3">
@@ -82,7 +82,7 @@
 												
 						
 						<div class="position-relative ">
-							<button type="submit" class="btn btn-outline-secondary position-absolute top-100 start-50 translate-middle">회원가입</button>
+							<button type="submit" class="btn btn-outline-secondary position-absolute top-100 start-50 translate-middle " style="margin-top: 30px" >회원가입</button>
 						</div>
 			 	 </div>
 		 	 </div>

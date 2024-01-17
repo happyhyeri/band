@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ include file="/WEB-INF/view/component/navbar.jspf"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,13 +19,69 @@ input::-webkit-inner-spin-button {
 	list-style-type: none;
 }
 </style>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-	crossorigin="anonymous">
+<link rel="styleshee" href="${pageContext.servletContext.contextPath }/resource/style/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 </head>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
 <body>
+	
+	<div class="sticky-top" style="background-color: #F0F0F0">
+		<div class="mx-auto" style="width: 1034px;">
+			<div class="">
+				<div class="d-flex justify-content-between" style="height: 55px;">
+					<div
+						class="d-flex justify-content-start gap-4 align-items-center">
+						<div
+							style="font-size: 20px; font-weight: bold; margin-top: 6px;">
+							<a class="navbar-brand" href="${contextPath }/index"> 
+								<img alt="밴드로고" src="${contextPath }/resource/band.png" width="80px" height="40">
+							</a>
+						</div>
+						<div class="input-group">
+							<input type="text" class="form-control"
+								placeholder="밴드, 페이지, 게시글 검색"
+								aria-label="Recipient's username"
+								aria-describedby="button-addon2"
+								style="font-size: 12px; width: 260px; height: 30px; margin-top: 5px">
+							<button class="btn btn-outline-secondary" type="button"
+								id="button-addon2"
+								style="font-size: 12px; height: 29px; margin-top: 5px; border: none; background-color: white">
+								<i class="bi bi-search"></i>
+							</button>
+						</div>
+					</div>
+					<div class="d-flex justify-content-end gap-4 align-items-center"
+						style="color: black;">
+						<div style="font-size: 13px">새글 피드</div>
+						<div style="font-size: 13px">찾기</div>
+						<div>
+							<i class="bi bi-bell-fill"></i>
+						</div>
+						<div>
+							<i class="bi bi-chat-dots-fill"></i>
+						</div>
+						<div class="dropdown">
+							<button
+								class="btn  dropdown-toggle rounded-circle"
+								type="button" data-bs-toggle="dropdown" aria-expanded="false"
+								style="width: 35px; height: 50px; background-color: transparent; border: none;">
+								<img
+									src="${fn:startsWith(profileImageUrl, 'http') ? '':contextPath }${profileImageUrl}"
+									class="rounded-circle" alt="프로필" width="35" height="35">
+							</button>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="${contextPath }/my/profile" style="font-size: 13px">내 정보</a></li>
+								<li><a class="dropdown-item" href="${contextPath }/my/post" style="font-size: 13px">내가 쓴 글</a></li>
+								<li><a class="dropdown-item" href="${contextPath }/signout" style="font-size: 13px">로그아웃</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="container mt-3">
 		<h4 class="text-left">내 정보</h4>
 		<div class="row gx-2">
