@@ -22,12 +22,12 @@
 			</div>
 			<div class="d-flex">
 				<div style="padding-top:8px;text-align: center; border: none; background-color: #F0F0F0; margin-right: 13px; font-size: 14px; width: 90px;height: 37px">
-					<a href="${contextPath }/register" style="text-decoration-line: none ">
+					<a href="${contextPath }/auth/sign_up_form" style="text-decoration-line: none ">
 						회원가입
 					</a>
 				</div>
 				<div style="padding-top:8px;text-align: center; background-color: #00c73c; border: none; font-size: 14px; width: 90px;  height: 37px">
-					<a href="${contextPath }/signin" style="text-decoration-line: none;font-weight: bold; color: white; ">
+					<a href="${contextPath }/auth/login_page" style="text-decoration-line: none;font-weight: bold; color: white; ">
 						로그인
 					</a>
 				</div>
@@ -43,12 +43,12 @@
 						<div style="font-size: 45px;">모임이 쉬워진다!</div>
 						<div style="font-size: 45px;">우리끼리 밴드</div>
 						<div class="mt-2 mb-2" style="font-size: 15px">당신의 모임도 BAND로 시작하세요.</div>
-						<a href="${contextPath }/signin" style="text-decoration-line: none;color: white;" class="">
+						<a href="${contextPath }/auth/login_page" style="text-decoration-line: none;color: white;" class="">
 							<div style="margin-bottom: 12px;width: 100%; background-color: #00c73c; text-align: center;  height: 45px; padding-top: 8px">
 								로그인
 							</div>
 						</a>
-						<a href="${contextPath }/register" style="text-decoration-line: none" class="">
+						<a href="${contextPath }/auth/sign_up_form" style="text-decoration-line: none" class="">
 							<div style="width: 100%; background-color: white; text-align: center; height: 45px; padding-top: 8px">
 								회원가입
 							</div>

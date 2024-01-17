@@ -88,7 +88,7 @@ public class SignController {
 		
 		session.setAttribute("logonUser", foundUser);
 
-		return "redirect:/"; //구분해줘야할듯 로그인 인덱스와
+		return "redirect:/index"; //구분해줘야할듯 로그인 인덱스와
 	}
 	
 	
@@ -132,7 +132,7 @@ public class SignController {
 			session.setAttribute("logonUser", user);
 
 		}
-		return "redirect:/";
+		return "redirect:/index";
 	}
 
 	// 네이버 연동 로그인
@@ -171,7 +171,7 @@ public class SignController {
 			session.setAttribute("logonUser", user);
 
 		}
-		return "redirect:/";
+		return "redirect:/index";
 	}
 
 	@GetMapping("/auth/sign_up_form")

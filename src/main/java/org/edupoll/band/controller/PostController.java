@@ -61,7 +61,7 @@ public class PostController {
 						.imageBandRoomId(postAdd.getPostBandRoomId()) //
 						.build();
 
-				File dir = new File("d:\\band\\upload\\", postAdd.getPostBandRoomId());
+				File dir = new File("c:\\band\\upload\\", postAdd.getPostBandRoomId());
 				dir.mkdirs();
 				File target = new File(dir, uuid);
 				image.transferTo(target);
@@ -113,7 +113,7 @@ public class PostController {
 						.imageBandRoomId(post.getPostBandRoomId()) //
 						.build();
 
-				File dir = new File("d:\\band\\upload\\", post.getPostBandRoomId());
+				File dir = new File("c:\\band\\upload\\", post.getPostBandRoomId());
 				dir.mkdirs();
 				File target = new File(dir, uuid);
 				image.transferTo(target);

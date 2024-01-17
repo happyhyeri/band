@@ -117,11 +117,6 @@ public class BandController {
 			BandMember member = bandMemberDao.findByRoomIdAndUserId(criteria);
 			model.addAttribute("member", member);
 			
-			Map<String, Object> criteria = new HashMap<>();
-			criteria.put("memberBandRoomId", bandRoomId);
-			criteria.put("memberUserId", logonUser.getUserId());
-			BandMember member = bandMemberDao.findByRoomIdAndUserId(criteria);
-			model.addAttribute("member", member);
 			
 			return "band/totalImage";
 		}

@@ -12,7 +12,7 @@ public class LogonCheckInterceptor implements HandlerInterceptor {
 			throws Exception {
 
 		if (request.getSession().getAttribute("logonUser") == null) {
-			response.sendRedirect(request.getContextPath() + "/signin");
+			response.sendRedirect(request.getContextPath() + "/auth/login_page");
 			return false;
 		}
 		return true;
