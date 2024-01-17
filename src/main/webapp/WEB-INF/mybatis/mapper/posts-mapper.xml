@@ -25,6 +25,16 @@
   			<result column="profile_nickname" property="profileNickName"/>
   			<result column="profile_image_url" property="profileImageUrl"/>
   		</association>
+  		<association property="bandRoom" javaType="bandRoom">
+  			<result column="bandroom_id" property="bandRoomId"/>
+  			<result column="bandroom_name" property="bandRoomName"/>
+  			<result column="bandroom_make_at" property="bandRoomMakeAt"/>
+  			<result column="leader" property="leader"/>
+  			<result column="bandroom_description" property="bandRoomDescription"/>
+  			<result column="cover_image_url" property="coverImageUrl"/>
+  			<result column="bandroom_color" property="bandRoomColor"/>
+  			<result column="type" property="type"/>
+  		</association>
   		<collection property="images" ofType="image" >
   			<result column="image_id" property="imageId"/>
   			<result column="image_url" property="imageUrl"/>
@@ -48,7 +58,7 @@
 		    posts p left join images i on p.post_id = i.image_post_id
 		            left join bandmembers m on p.post_member_id = m.member_id
 		            left join profiles pr on m.member_profile_id = pr.profile_id
-		            left join comments c on p.post_id = c.comment_post_id
+		            left join bandrooms r on p.post_bandroom_id = r.bandroom_id
 		    where p.post_bandroom_id = #{postBandRoomId}
 		    order by p.post_write_at desc
   	</select>
@@ -64,5 +74,16 @@
   	<delete id="deleteById">
   		delete from posts where post_id = #{postId}
   	</delete>
+  	
+  	<select id="findMyPost" resultMap="postWithDetail">
+  		select p.*, m.*, i.*, pr.*, r.* from posts p
+		    left join bandmembers m on p.post_member_id = m.member_id
+		    left join users u on m.member_user_id = u.user_id
+		    left join images i on p.post_id = i.image_post_id
+		    left join profiles pr on m.member_profile_id = pr.profile_id
+		    left join bandrooms r on p.post_bandroom_id = r.bandroom_id
+		    where u.user_id = #{userId}
+		    order by p.post_write_at desc
+  	</select>
   	
   </mapper>

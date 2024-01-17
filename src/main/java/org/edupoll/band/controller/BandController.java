@@ -15,6 +15,7 @@ import org.edupoll.band.dao.BandRoomDao;
 import org.edupoll.band.dao.ImageDao;
 import org.edupoll.band.dao.PostDao;
 import org.edupoll.band.dao.ProfileDao;
+import org.edupoll.band.dao.ScheduleDao;
 import org.edupoll.band.dao.UserDao;
 import org.edupoll.band.model.Album;
 import org.edupoll.band.model.BandMember;
@@ -23,6 +24,7 @@ import org.edupoll.band.model.CreatBandRoom;
 import org.edupoll.band.model.Image;
 import org.edupoll.band.model.Post;
 import org.edupoll.band.model.Profile;
+import org.edupoll.band.model.Schedule;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +51,13 @@ public class BandController {
 	private final PostDao postDao;
 	private final AlbumDao albumDao;
 	private final ImageDao imageDao;
+	private final ScheduleDao scheduleDao;
 	private final UserDao userDao;
+  
+	@ModelAttribute("nextSchedule")
+	public Schedule findNextSchedule() {
+		return scheduleDao.findNextSchedule();
+	}
 
 	@GetMapping("/band/{bandRoomId}")
 	public String showBandRoom(@SessionAttribute User logonUser, @PathVariable String bandRoomId,

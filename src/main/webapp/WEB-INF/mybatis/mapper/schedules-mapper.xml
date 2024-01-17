@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.edupoll.band.dao.ScheduleDao">
+
+	<resultMap type="schedule" id="scheduleWithMember">
+		<result column="schedule_id" property="scheduleId"/>
+		<result column="schedule_title" property="scheduleTitle"/>
+		<result column="schedule_description" property="scheduleDescription"/>
+		<result column="schedule_date" property="scheduleDate"/>
+		<result column="schedule_member_id" property="scheduleMemberId"/>
+		<result column="schedule_bandroom_id" property="scheduleBandRoomId"/>
+		<association property="member">
+			<result column="member_id" property="memberId"/>
+			<result column="member_bandroom_id" property="memberBandRoomId"/>
+			<result column="member_user_id" property="memberUserId"/>
+			<result column="member_profile_id" property="memberProfileId"/>
+			<result column="member_status" property="memberStatus"/>
+			<result column="member_user_id" property="memberUserId"/>
+		</association>
+	</resultMap>
+	
+	<insert id="saveSchedule">
+		insert into schedules values(schedules_seq.nextval, #{scheduleTitle}, #{scheduleDescription, jdbcType=VARCHAR}, #{scheduleDate}, #{scheduleMemberId}, #{scheduleBandRoomId})
+	</insert>
+	
+	<select id="findCurrentMonthSchedule" resultMap="scheduleWithMember">
+		select * from schedules s
+			left join bandmembers m on s.schedule_member_id = m.member_id
+			where to_char(schedule_date, 'yyyy-MM') like #{currentDate}
+	</select>
+	
+	<select id="findNextSchedule" resultType="schedule">
+		select * from (select * from schedules where schedule_date > sysdate order by schedule_date asc) where rownum &lt;= 1
+	</select>
+
+</mapper>

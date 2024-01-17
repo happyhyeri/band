@@ -37,7 +37,7 @@
 					<small>${bandRoom.bandRoomDescription }</small>
 				</div>
 				<div class="mt-2">
-					<button type="button" id="write" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }"  data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
+					<button type="button" id="write" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }" data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
 				</div>
 				<div class="text-secondary border-bottom border-1 pb-2 lh-1">
 					<small>누구나 밴드를 검색해 찾을 수 있고, 밴드 소개와 게시글을 볼 수 있습니다.</small>
@@ -49,28 +49,29 @@
 				</c:if>
 			</div>
 			<!-- 2 -->
-			<div class="flex-grow-1 flex-column" style="min-width: 500px;">
-				<div class="d-flex align-items-center p-3 shadow-sm rounded-1" style="background-color: white;">
-					<div class="fs-5 fw-bold me-3">멤버</div>
-					<div>${memberCnt }</div>
-				</div>
-				<div class="d-flex align-items-center mt-1 p-3 shadow-sm rounded-1" style="background-color: white;">
-					<div class="fw-bold" style="cursor:pointer" onclick="location.href='${contextPath }/band/${bandRoom.bandRoomId}/applications'">가입요청 목록 &gt;</div>
-				</div>
-				<div class="mt-1 p-3 shadow-sm rounded-1" style="background-color: white;">
-					<div class="fw-bold">멤버</div>
-					<div class="mt-3">
-						<c:forEach var="one" items="${members }" varStatus="status">
-							<div class="d-flex align-items-center border-bottom border-1 pb-3 ${status.first ? '' : 'mt-3' }">
-								<div>
-									<img src="${fn:startsWith(one.profile.profileImageUrl, 'http') ? '' : contextPath }${one.profile.profileImageUrl }" class="rounded-circle" width="48" height="48">
-								</div>
-								<div class="ms-3 fw-bold">
-									${one.profile.profileNickName }
-								</div>
+			<div class="flex-grow-1 flex-column" id="wrap">
+				<div class="shadow-sm rounded-1" style="background-color: white;">
+					<div class="d-flex justify-content-between align-items-center p-4 border-bottom border-1">
+						<div class="d-flex align-items-center">
+							<div class="h3 fw-bold mb-0">${currentDate }</div>
+							<div class="btn-group ms-3">
+								<button type="button" class="border border-0 ${bandRoom.bandRoomColor }" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar?currentDate=${prevDate }'"><i class="bi bi-caret-left-fill"></i></button>
+								<button type="button" class="border border-0 ${bandRoom.bandRoomColor }" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar?currentDate=${nextDate }'"><i class="bi bi-caret-right-fill"></i></button>
 							</div>
-						</c:forEach>
+						</div>
+						<div>
+							<button type="button" class="border border-0 ${bandRoom.bandRoomColor } px-2 py-1" data-bs-toggle="modal" data-bs-target="#createSchedule">일정 만들기</button>
+						</div>
 					</div>
+					<c:forEach var="one" items="${schedules }">
+						<div class="d-flex align-items-center mx-3 py-3 border-bottom border-1">
+							<div class="me-4">
+								<div class="fs-5 fw-bold text-center"><fmt:formatDate value="${one.scheduleDate }" pattern="dd"/></div>
+								<div class="fs-6"><fmt:formatDate value="${one.scheduleDate }" pattern="E요일"/></div>
+							</div>
+							<div class="fs-5">${one.scheduleTitle }</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
 			<!-- 3 -->
@@ -103,11 +104,48 @@
 						</div>
 					</div>
 					<div class="modal-footer justify-content-between align-items-center">
-						<i class="bi bi-image fs-3 ps-1" style="cursor: pointer;" onclick="document.querySelector('#images').click();"></i>
-						<input type="file" id="images" name="images" style="display: none;" multiple accept="image/**" />
-						<input type="hidden" name="postMemberId" value="${member.memberId }" />
-						<input type="hidden" name="postBandRoomId" value="${bandRoom.bandRoomId }" />
+						<div>
+							<i class="bi bi-image fs-3 ps-1" style="cursor: pointer;" onclick="document.querySelector('#images').click();"></i>
+						</div>
+						<input type="file" id="images" name="images" style="display: none;" multiple accept="image/**" /> <input type="hidden" name="postMemberId" value="${member.memberId }" /> <input type="hidden" name="postBandRoomId" value="${bandRoom.bandRoomId }" />
 						<button type="submit" class="btn px-5 text-white" style="background-color: #000033;">게시</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- postWrite Modal -->
+	<div class="modal fade" id="createSchedule" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" style="width: 600px;">
+			<div class="modal-content">
+				<div class="modal-header justify-content-center">
+					<button type="button" class="btn-close position-absolute" style="top: 10px; right: 10px;" data-bs-dismiss="modal" aria-label="Close"></button>
+					<div class="modal-title text-center position-relative" id="staticBackdropLabel">
+						<span class="fw-bold">일정 만들기</span>
+					</div>
+				</div>
+				<form action="${contextPath }/band/schedule/add" method="post">
+					<div class="modal-body">
+						<div>
+							<input type="text" name="scheduleTitle" placeholder="일정 제목" class="w-100 border border-1 rounded-1 p-2 my-2" />
+						</div>
+						<div>
+							<input type="text" name="scheduleDescription" placeholder="일정 설명" class="w-100 border border-1 rounded-1 p-2 my-2" />
+						</div>
+						<div class="d-flex align-items-center">
+							<div class="me-3">
+								날짜
+							</div>
+							<div class="flex-grow-1">
+								<input type="date" name="scheduleDate" class="w-100 rounded-1 border border-1 text-center p-2 my-2"/>
+							</div>
+							<input type="hidden" name="scheduleBandRoomId" value="${bandRoom.bandRoomId }"/>
+							<input type="hidden" name="scheduleMemberId" value="${member.memberId }"/>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center align-items-center">
+						<button type="submit" class="btn px-5 text-white" style="background-color: #000033;">완료</button>
 					</div>
 				</form>
 			</div>
@@ -155,47 +193,6 @@
 					
 					document.querySelector("#imageView").appendChild(div);
 				}
-			});
-		}
-		
-		function updateModalData(evt) {
-			let targetPostId = evt.target.dataset.postid;
-			let newContent = evt.target.dataset.content;
-			let imagesData = evt.target.dataset.imates;
-			
-			let textarea = document.querySelector('#updateContent');
-			textarea.textContent = newContent;
-			document.querySelector('#updatePostId').value = targetPostId;
-			
-			const updatePostImageView = document.querySelector("#updatePostImageView");
-			while (updatePostImageView.firstChild) {
-				updatePostImageView.removeChild(updatePostImageView.firstChild);
-			}
-			
-			imagesData.forEach(function(elm) {
-				const div = document.createElement("div");
-				div.className = "mx-1 rounded position-relative";
-				div.style.overflow = "hidden";
-				div.style.minWidth = "100px";
-				
-				const img = document.createElement("img");
-				img.src = elm.imageUrl;
-				img.width = 100;
-				img.height = 100;
-				img.className = "object-fit-cover";
-				div.appendChild(img);
-				
-				const button = document.createElement("button");
-				button.type = "button";
-				button.className = "btn-close position-absolute top-0 end-0";
-				button.ariaLabel = "Close";
-				div.appendChild(button);
-				
-				button.onclick = function() {
-					updatePostImageView.removeChild(this.parentNode);
-				}
-				
-				updatePostImageView.appendChild(div);				
 			});
 		}
 		

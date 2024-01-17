@@ -9,16 +9,17 @@
 <title>${bandRoom.bandRoomName }</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resource/style/style.css">
 </head>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }" />
 <body>
-	<div style="background-color: #F0F0F0; min-height: 100vh">
+	<div class="position-relative" style="min-height:100vh; background-color: #F0F0F0;">
 		<!-- nav 들어갈 자리 -->
-		<div class="sticky-top" style="background-color: black; height: 40px; font-size: 14px;">
+		<div class="sticky-top ${bandRoom.bandRoomColor }" style="height: 40px; font-size: 14px;">
 			<ul class="nav justify-content-center gap-5 nav-underline">
 				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a></li>
 				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">일정</a></li>
+				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/calendar"s style="padding-bottom: 1px">일정</a></li>
 				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opa city-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">첨부</a></li>
 				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/member" style="padding-bottom: 1px">멤버</a></li>
 			</ul>
@@ -26,8 +27,8 @@
 
 		<div class="mx-auto d-flex align-items-start pt-3 " style="width: 1034px;">
 			<!-- 1 -->
-			<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
-				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="min-width: 208px; min-height: 157px; background-color: white;" class="rounded-1">
+			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 50px">
+				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 				<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 				<div class="mt-2">
 					멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대
@@ -36,8 +37,16 @@
 					<small>${bandRoom.bandRoomDescription }</small>
 				</div>
 				<div class="mt-2">
-					<button type="button" id="write" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
+					<button type="button" id="write" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }"  data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
 				</div>
+				<div class="text-secondary border-bottom border-1 pb-2 lh-1">
+					<small>누구나 밴드를 검색해 찾을 수 있고, 밴드 소개와 게시글을 볼 수 있습니다.</small>
+				</div>
+				<c:if test="${bandRoom.leader eq member.memberId }">
+					<div class="text-secondary mt-2" style="cursor:pointer;">
+						<i class="bi bi-gear"></i> 밴드 설정
+					</div>
+				</c:if>
 			</div>
 			<!-- 2 -->
 			<div class="flex-grow-1 flex-column" style="min-width: 500px;">
@@ -72,7 +81,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="pb-3 ms-3" style="min-width: 208px;">
+			<!-- 3 -->
+			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
 				<div>다가오는 일정</div>
 				<div>채팅</div>
 				<div>파일</div>
@@ -170,7 +180,7 @@
 				if (xhr.readyState == 4) {
 					var response = JSON.parse(xhr.responseText);
 					if (response.result == 'success') {
-
+						target.parentNode.parentNode.parentNode.removeChild(target.parentNode.parentNode);
 					}
 				}
 			}

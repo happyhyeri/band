@@ -25,6 +25,7 @@ public class Post {
 	private BandMember member;
 	private List<Image> images;
 	private Profile profile;
+	private BandRoom bandRoom;
 
 	private transient String json;
 }

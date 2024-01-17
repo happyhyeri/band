@@ -13,8 +13,10 @@ public interface BandRoomDao {
 	
 	public int update(Map<String, Object> one);
 	
-	
 	public Integer findLeader(String bandRoomId);
 	
+	public List<BandRoom> findJoinedBandRoom(String userId);
+
 	public List<BandRoom> findBandRoomNotIncludeByUserId(String userId);
+
 }

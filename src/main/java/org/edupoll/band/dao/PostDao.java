@@ -15,4 +15,6 @@ public interface PostDao {
 	public int updateContent(Map<String, Object> criteria);
 	
 	public int deleteById(int postId);
+	
+	public List<Post> findMyPost(String userId);
 }
