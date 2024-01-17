@@ -57,7 +57,7 @@ public class ImageController {
 		map.put("memberUserId", logonUser.getUserId());
 		BandMember two = bandMemberDao.findByRoomIdAndUserId(map);
 
-		File dir = new File("c:\\band\\upload\\", bandRoomId);
+		File dir = new File("d:\\band\\upload\\", bandRoomId);
 		dir.mkdirs();
 		// System.out.println("length-->" + wholeImages.length);
 		for (MultipartFile image : wholeImages) {

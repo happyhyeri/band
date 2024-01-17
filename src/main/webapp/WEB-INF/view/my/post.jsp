@@ -13,16 +13,54 @@
 </head>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }" />
 <body>
-	<div class="position-relative" style="min-height:100vh; background-color: #F0F0F0;">
-		<!-- nav 들어갈 자리 -->
-
+	<div class="position-relative" style="min-height: 100vh; background-color: #F0F0F0;">
+		<div class="sticky-top" style="background-color: #F0F0F0">
+			<div class="mx-auto" style="width: 1034px;">
+				<div class="">
+					<div class="d-flex justify-content-between" style="height: 55px;">
+						<div class="d-flex justify-content-start gap-4 align-items-center">
+							<div style="font-size: 20px; font-weight: bold; margin-top: 6px;">
+								<a class="navbar-brand" href="${contextPath }/index"> <img alt="밴드로고" src="${contextPath }/resource/band.png" width="80px" height="40">
+								</a>
+							</div>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="밴드, 페이지, 게시글 검색" aria-label="Recipient's username" aria-describedby="button-addon2" style="font-size: 12px; width: 260px; height: 30px; margin-top: 5px">
+								<button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 12px; height: 29px; margin-top: 5px; border: none; background-color: white">
+									<i class="bi bi-search"></i>
+								</button>
+							</div>
+						</div>
+						<div class="d-flex justify-content-end gap-4 align-items-center" style="color: black;">
+							<div style="font-size: 13px">새글 피드</div>
+							<div style="font-size: 13px">찾기</div>
+							<div>
+								<i class="bi bi-bell-fill"></i>
+							</div>
+							<div>
+								<i class="bi bi-chat-dots-fill"></i>
+							</div>
+							<div class="dropdown">
+								<button class="btn btn-secondary dropdown-toggle rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 35px; height: 50px; background-color: transparent; border: none;">
+									<img src="${fn:startsWith(profileImageUrl, '/resource') ? contextPath:'' }${profileImageUrl}" class="rounded-circle" alt="프로필" width="35" height="35">
+								</button>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item" href="${contextPath }/my/profile" style="font-size: 13px">내 정보</a></li>
+									<li><a class="dropdown-item" href="${contextPath }/my/post" style="font-size: 13px">내가 쓴 글</a></li>
+									<li><a class="dropdown-item" href="${contextPath }/signout" style="font-size: 13px">로그아웃</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="mx-auto d-flex align-items-start pt-3 " style="width: 1034px;">
 			<!-- 1 -->
-			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 50px">
+			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 65px">
 				<ul class="list-group" style="width: 208px;">
 					<li class="list-group-item fw-bold fs-5">가입된 밴드</li>
 					<c:forEach var="one" items="${bandrooms }">
-						<li class="list-group-item" onclick="location.href='${contextPath}/band/${one.bandRoomId}'" style="cursor:pointer;">${one.bandRoomName }</li>
+						<li class="list-group-item" onclick="location.href='${contextPath}/band/${one.bandRoomId}'" style="cursor: pointer;">${one.bandRoomName }</li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -31,9 +69,7 @@
 				<div class="p-3 shadow-sm rounded-1 fw-bold" style="background-color: white;">내가 쓴 글</div>
 				<c:forEach var="one" items="${posts }">
 					<div class="mt-3 p-3 shadow-sm rounded-1" style="min-height: 100px; background-color: white;">
-						<div class="fw-bold m-2 mb-4 py-2 border-bottom border-1" onclick="location.href='${contextPath}/band/${one.bandRoom.bandRoomId}'" style="cursor:pointer;">
-							${one.bandRoom.bandRoomName }
-						</div>
+						<div class="fw-bold m-2 mb-4 py-2 border-bottom border-1" onclick="location.href='${contextPath}/band/${one.bandRoom.bandRoomId}'" style="cursor: pointer;">${one.bandRoom.bandRoomName }</div>
 						<div class="d-flex align-items-center">
 							<div>
 								<img src="${fn:startsWith(one.profile.profileImageUrl, 'http') ? '' : contextPath }${one.profile.profileImageUrl }" width="48" height="48" class="rounded-circle me-3">
@@ -96,14 +132,12 @@
 				</c:forEach>
 			</div>
 			<!-- 3 -->
-			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
-				오른쪽
-			</div>
+			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 65px"></div>
 		</div>
 	</div>
-	
+
 	<!-- ================================================================================================================================= -->
-	
+
 	<!-- postUpdate Modal -->
 	<div class="modal fade" id="postUpdateModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" style="width: 600px;">

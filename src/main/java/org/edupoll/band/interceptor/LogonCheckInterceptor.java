@@ -5,16 +5,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
-public class LogonCheckInterceptor implements HandlerInterceptor  {
-	
+public class LogonCheckInterceptor implements HandlerInterceptor {
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		if(request.getSession().getAttribute("logonUser") == null) {
-			response.sendRedirect(request.getContextPath()+"/signin");
+
+		if (request.getSession().getAttribute("logonUser") == null) {
+			response.sendRedirect(request.getContextPath() + "/signin");
 			return false;
 		}
-		return true; 
+		return true;
 	}
 }

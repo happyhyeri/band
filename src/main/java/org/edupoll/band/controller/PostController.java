@@ -61,7 +61,7 @@ public class PostController {
 						.imageBandRoomId(postAdd.getPostBandRoomId()) //
 						.build();
 
-				File dir = new File("c:\\band\\upload\\", postAdd.getPostBandRoomId());
+				File dir = new File("d:\\band\\upload\\", postAdd.getPostBandRoomId());
 				dir.mkdirs();
 				File target = new File(dir, uuid);
 				image.transferTo(target);
@@ -77,25 +77,28 @@ public class PostController {
 	public String proceedUpdatePost(@ModelAttribute PostUpdate postUpdate) throws IllegalStateException, IOException {
 
 		Post post = postDao.findById(postUpdate.getPostId());
-		
+
 		Map<String, Object> criteria = new HashMap<>();
 		criteria.put("content", postUpdate.getContent());
 		criteria.put("postId", postUpdate.getPostId());
 		postDao.updateContent(criteria);
-		
-		String[] imageUrls = postUpdate.getImageUrls();
+
+		List<String> imageUrls = postUpdate.getImageUrls();
 		List<Image> existingImages = imageDao.findAllByPostId(postUpdate.getPostId());
 		if (imageUrls != null) {
-			for (Image one : existingImages) {
-				for (String s : imageUrls) {
+			for (String s : imageUrls) {
+				for (Image one : existingImages) {
 					if (one.getImageUrl().equals(s)) {
-						continue;
+						existingImages.remove(one);
+						break;
 					}
-					imageDao.deleteById(one.getImageId());
 				}
 			}
+			for (Image one : existingImages) {
+				imageDao.deleteById(one.getImageId());
+			}
 		}
-		
+
 		MultipartFile[] images = postUpdate.getImages();
 		if (images.length > 0) {
 			for (MultipartFile image : images) {
@@ -110,7 +113,7 @@ public class PostController {
 						.imageBandRoomId(post.getPostBandRoomId()) //
 						.build();
 
-				File dir = new File("c:\\band\\upload\\", post.getPostBandRoomId());
+				File dir = new File("d:\\band\\upload\\", post.getPostBandRoomId());
 				dir.mkdirs();
 				File target = new File(dir, uuid);
 				image.transferTo(target);
@@ -121,17 +124,17 @@ public class PostController {
 
 		return "redirect:/band/" + post.getPostBandRoomId();
 	}
-	
+
 	@DeleteMapping("/post/delete")
 	@ResponseBody
 	public String proceedDeletePost(@RequestParam int postId) {
 		imageDao.deleteById(postId);
 		postDao.deleteById(postId);
-		
+
 		Map<String, Object> response = new HashMap<>();
 		response.put("result", "success");
 		Gson gson = new Gson();
-		
+
 		return gson.toJson(response);
 	}
 }

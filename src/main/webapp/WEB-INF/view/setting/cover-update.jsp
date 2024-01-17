@@ -164,7 +164,7 @@
 				</div>
 				<div class="d-flex justify-content-center gap-4">
 					<div>
-						<button onclick="location.href='${pageContext.servletContext.contextPath }/home'" type="button" style="width: 150px; height: 42px; border: 1px solid #E2E2E2" class="rounded-1">
+						<button onclick="location.href='${pageContext.servletContext.contextPath }/index'" type="button" style="width: 150px; height: 42px; border: 1px solid #E2E2E2" class="rounded-1">
 							취소
 						</button>
 					</div>

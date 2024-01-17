@@ -9,9 +9,12 @@ import java.util.Map;
 
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
+import org.edupoll.band.dao.ProfileDao;
 import org.edupoll.band.dao.ScheduleDao;
+import org.edupoll.band.dao.UserDao;
 import org.edupoll.band.model.BandMember;
 import org.edupoll.band.model.BandRoom;
+import org.edupoll.band.model.Profile;
 import org.edupoll.band.model.Schedule;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,20 @@ public class ScheduleController {
 	private final BandRoomDao bandRoomDao;
 	private final BandMemberDao bandMemberDao;
 	private final ScheduleDao scheduleDao;
+	private final ProfileDao profileDao;
+	private final UserDao userDao;
+
+	@ModelAttribute("profileImageUrl")
+	public String findProfileImageUrl(@SessionAttribute User logonUser) {
+		User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		return profiles.get(0).getProfileImageUrl();
+	}
+
+	@ModelAttribute("nextSchedule")
+	public Schedule findNextSchedule() {
+		return scheduleDao.findNextSchedule();
+	}
 
 	@GetMapping("/{bandRoomId}/calendar")
 	public String showCalender(@RequestParam(required = false) String currentDate, @PathVariable String bandRoomId,

@@ -2,32 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${bandRoom.bandRoomName }</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resource/style/style.css">
-</head>
-<c:set var="contextPath" value="${pageContext.servletContext.contextPath }" />
-<body>
-	<div class="position-relative" style="min-height:100vh; background-color: #F0F0F0;">
-		<!-- nav 들어갈 자리 -->
-		<div class="sticky-top ${bandRoom.bandRoomColor }" style="height: 40px; font-size: 14px;">
-			<ul class="nav justify-content-center gap-5 nav-underline">
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/calendar" style="padding-bottom: 1px">일정</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opa city-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">첨부</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/member" style="padding-bottom: 1px">멤버</a></li>
-			</ul>
-		</div>
+<%@ include file="/WEB-INF/view/component/header.jspf"%>
 
 		<div class="mx-auto d-flex align-items-start pt-3 " style="width: 1034px;">
 			<!-- 1 -->
-			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 50px">
+			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 115px">
 				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 				<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 				<div class="mt-2">
@@ -75,11 +54,17 @@
 				</div>
 			</div>
 			<!-- 3 -->
-			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
-				<div>다가오는 일정</div>
-				<div>채팅</div>
-				<div>파일</div>
-				<div>최근 사진</div>
+			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 115px">
+				<div class="p-2 shadow-sm rounded-1" style="background-color: white;">
+					<div class="fw-bold border-bottom border-1 p-1"><small>다가오는 일정</small></div>
+					<div class="d-flex align-items-center mt-2" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar'" style="cursor: pointer;">
+						<div class="ms-1">
+							<div class="fw-bold text-center"><fmt:formatDate value="${nextSchedule.scheduleDate }" pattern="dd"/></div>
+							<div class="text-center"><small><fmt:formatDate value="${nextSchedule.scheduleDate }" pattern="MM월"/></small></div>
+						</div>
+						<div class="flex-grow-1 fw-bold ms-3">${nextSchedule.scheduleTitle }</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -115,7 +100,7 @@
 		</div>
 	</div>
 	
-	<!-- postWrite Modal -->
+	<!-- addSchedule Modal -->
 	<div class="modal fade" id="createSchedule" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" style="width: 600px;">
 			<div class="modal-content">
@@ -125,27 +110,29 @@
 						<span class="fw-bold">일정 만들기</span>
 					</div>
 				</div>
-				<form action="${contextPath }/band/schedule/add" method="post">
+				<form action="${contextPath }/band/schedule/add" method="post" id="scheduleForm"
+				
+				name="scheduleForm" onsubmit="checkValue(event);">
 					<div class="modal-body">
 						<div>
-							<input type="text" name="scheduleTitle" placeholder="일정 제목" class="w-100 border border-1 rounded-1 p-2 my-2" />
+							<input type="text" id="scheduleTitle" name="scheduleTitle" placeholder="일정 제목"  class="w-100 border border-1 rounded-1 p-2 my-2" />
 						</div>
 						<div>
-							<input type="text" name="scheduleDescription" placeholder="일정 설명" class="w-100 border border-1 rounded-1 p-2 my-2" />
+							<input type="text" name="scheduleDescription" placeholder="일정 설명"  class="w-100 border border-1 rounded-1 p-2 my-2" />
 						</div>
 						<div class="d-flex align-items-center">
 							<div class="me-3">
 								날짜
 							</div>
 							<div class="flex-grow-1">
-								<input type="date" name="scheduleDate" class="w-100 rounded-1 border border-1 text-center p-2 my-2"/>
+								<input type="date" name="scheduleDate"  class="w-100 rounded-1 border border-1 text-center p-2 my-2"/>
 							</div>
 							<input type="hidden" name="scheduleBandRoomId" value="${bandRoom.bandRoomId }"/>
 							<input type="hidden" name="scheduleMemberId" value="${member.memberId }"/>
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center align-items-center">
-						<button type="submit" class="btn px-5 text-white" style="background-color: #000033;">완료</button>
+						<button type="submit" class="btn px-5 text-white" style="background-color: #000033;" >완료</button>
 					</div>
 				</form>
 			</div>
@@ -154,6 +141,19 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
+		function checkValue(e) {
+			const form = document.scheduleForm;
+			const scheduleTitle = form.scheduleTitle.value;
+			const scheduleDescription = form.scheduleDescription.value;
+			const scheduleDate = form.scheduleDate.value;
+			
+			if (scheduleDate.trim() == '' || scheduleDescription.trim() == '' || scheduleDate == ''||
+				scheduleDate == null || scheduleDescription == null || scheduleDate == null) {
+				window.alert("모든 값을 입력해주세요.");
+				e.preventDefault();
+			}
+		}
+	
 		document.querySelector("#images").onchange = function(e) {
 			
 			// 이전에 선택되어있던 것들 삭제

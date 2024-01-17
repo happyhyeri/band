@@ -89,9 +89,8 @@
 				</div>
 		</div>
 		
-		
 		<!-- 3 -->
-		<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
+		<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 115px">
 			<div class="p-2 shadow-sm rounded-1" style="background-color: white;">
 				<div class="fw-bold border-bottom border-1 p-1"><small>다가오는 일정</small></div>
 				<div class="d-flex align-items-center mt-2" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar'" style="cursor: pointer;">

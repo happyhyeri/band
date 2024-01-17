@@ -31,7 +31,6 @@ public class IndexController {
 	private final ProfileDao profileDao;
 	private final BandRoomDao bandRoomDao;
 	
-	
 	@GetMapping("/index")
 	public String showShowIndex(@SessionAttribute(required = false) User logonUser, Model model) {
 		

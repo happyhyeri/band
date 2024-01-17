@@ -56,6 +56,13 @@ public class BandController {
 	public Schedule findNextSchedule() {
 		return scheduleDao.findNextSchedule();
 	}
+	
+	@ModelAttribute("profileImageUrl")
+	public String findProfileImageUrl(@SessionAttribute User logonUser) {
+		User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		return profiles.get(0).getProfileImageUrl();
+	}
 
 	@GetMapping("/band/{bandRoomId}")
 	public String showBandRoom(@SessionAttribute User logonUser, @PathVariable String bandRoomId,
@@ -83,7 +90,7 @@ public class BandController {
 			model.addAttribute("posts", posts);
 
 		return "band/home";
-	}
+  }
   
 	// 전체사진 디테일 창
 		@GetMapping("/band/{bandRoomId}/album/total")
@@ -104,9 +111,11 @@ public class BandController {
 			model.addAttribute("cntTotalImage", cntTotalImage);
 			model.addAttribute("bandRoomId", bandRoomId);	
 			
-			User user = userDao.findUserById(logonUser.getUserId());
-			List<Profile> profiles = profileDao.findProfileById(user.getUserId());
-			model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
+			Map<String, Object> criteria = new HashMap<>();
+			criteria.put("memberBandRoomId", bandRoomId);
+			criteria.put("memberUserId", logonUser.getUserId());
+			BandMember member = bandMemberDao.findByRoomIdAndUserId(criteria);
+			model.addAttribute("member", member);
 			
 			Map<String, Object> criteria = new HashMap<>();
 			criteria.put("memberBandRoomId", bandRoomId);
@@ -121,11 +130,6 @@ public class BandController {
 		@GetMapping("/band/{bandRoomId}/setting/cover-update")
 		public String showBandRoomSettingForm(@PathVariable String bandRoomId,
 											  @SessionAttribute User logonUser,Model model) {
-			
-			
-			User user = userDao.findUserById(logonUser.getUserId());
-			List<Profile> profiles = profileDao.findProfileById(user.getUserId());
-			model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
 			
 			BandRoom bandRoom = bandRoomDao.findByBandRoomId(bandRoomId);
 			model.addAttribute("bandRoom", bandRoom);

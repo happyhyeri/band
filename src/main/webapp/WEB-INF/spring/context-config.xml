@@ -24,7 +24,8 @@
 	 <bean id="logonCheckInterceptor" class="org.edupoll.band.interceptor.LogonCheckInterceptor"></bean> 
 		<mvc:interceptors> 
 			<mvc:interceptor> 
-				<mvc:mapping path="/band/**"/> 
+				<mvc:mapping path="/band/**"/>
+				<mvc:mapping path="/my/**"/> 
 				<ref bean="logonCheckInterceptor"/> 
 			</mvc:interceptor> 
 		</mvc:interceptors>

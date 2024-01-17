@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.edupoll.band.dao.BandRoomDao;
 import org.edupoll.band.dao.PostDao;
+import org.edupoll.band.dao.ProfileDao;
+import org.edupoll.band.dao.UserDao;
 import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.Post;
+import org.edupoll.band.model.Profile;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +24,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/my")
 @RequiredArgsConstructor
 public class MyController {
-
+	
+	private final UserDao userDao;
+	private final ProfileDao profileDao;
 	private final PostDao postDao;
 	private final BandRoomDao bandRoomDao;
 
 	@GetMapping("/post")
 	public String showMyPost(@SessionAttribute User logonUser, Model model) {
+
+		User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
+		
 		List<Post> posts = postDao.findMyPost(logonUser.getUserId());
 		Gson gson = new Gson();
 		posts.stream().forEach(elm -> elm.setJson(gson.toJson(elm)));

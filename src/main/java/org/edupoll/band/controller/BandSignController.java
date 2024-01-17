@@ -37,21 +37,27 @@ public class BandSignController {
 	private final ProfileDao profileDao;
 	private final UserDao userDao;
 
-  @GetMapping("/band-create")
+	@ModelAttribute("profileImageUrl")
+	public String findProfileImageUrl(@SessionAttribute User logonUser) {
+		User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		return profiles.get(0).getProfileImageUrl();
+	}
+
+	@GetMapping("/band-create")
 	public String showFormForBandCerate(@SessionAttribute User logonUser, Model model) {
-	  	User user = userDao.findUserById(logonUser.getUserId());
+		User user = userDao.findUserById(logonUser.getUserId());
 		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
 		model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
-	  
+
 		return "band/band-create";
 	}
 
 	@PostMapping("/band-create")
 
-	public String createBandRoom(
-								@ModelAttribute CreatBandRoom createBandRoom ,@SessionAttribute User logonUser
-								,@RequestParam String coverImageUrl ,Model model) throws IllegalStateException, IOException {
-		
+	public String createBandRoom(@ModelAttribute CreatBandRoom createBandRoom, @SessionAttribute User logonUser,
+			@RequestParam String coverImageUrl, Model model) throws IllegalStateException, IOException {
+
 		String uuid = UUID.randomUUID().toString();
 		String[] uuids = uuid.split("-");
 
@@ -71,32 +77,28 @@ public class BandSignController {
 			File target = new File(dir, "img.jpg");
 			createBandRoom.getBandimage().transferTo(target);
 		}
-		
-		
+
 		// 밴드룸 insert
 		BandRoom one = BandRoom.builder().bandRoomId(uuids[0].toUpperCase()) //
 				.bandRoomName(createBandRoom.getBandRoomName()) //
 				.coverImageUrl(imageUrl) //
 				.bandRoomColor("cF85C8E") //
-				.bandRoomDescription("저희 밴드에 놀러오세요 :")
-				.type(createBandRoom.getType()) //
+				.bandRoomDescription("저희 밴드에 놀러오세요 :").type(createBandRoom.getType()) //
 				.build();
 
 		bandRoomDao.saveBandroom(one);
 		// System.out.println("밴드룸생성 결과--> "+x);
-		
+
 		// User로 profile을 찾아서 0번째
 		List<Profile> profile = profileDao.findProfileById(logonUser.getUserId());
 		// 밴드멤버 insert
-		BandMember member = BandMember.builder()
-							.memberBandRoomId(one.getBandRoomId())
-							.memberUserId(logonUser.getUserId())
-							.memberProfileId(profile.get(0).getProfileId())
-							.memberStatus("accept").build();
-		
+		BandMember member = BandMember.builder().memberBandRoomId(one.getBandRoomId())
+				.memberUserId(logonUser.getUserId()).memberProfileId(profile.get(0).getProfileId())
+				.memberStatus("accept").build();
+
 		bandMemberDao.saveMember(member);
-		//one.setLeader(member.getMemberId());
-		
+		// one.setLeader(member.getMemberId());
+
 		Map<String, Object> roomMap = new HashMap<String, Object>();
 		roomMap.put("bandRoomId", one.getBandRoomId());
 		roomMap.put("leader", member.getMemberId());

@@ -2,32 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${bandRoom.bandRoomName }</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resource/style/style.css">
-</head>
-<c:set var="contextPath" value="${pageContext.servletContext.contextPath }" />
-<body>
-	<div class="position-relative" style="min-height:100vh; background-color: #F0F0F0;">
-		<!-- nav 들어갈 자리 -->
-		<div class="sticky-top ${bandRoom.bandRoomColor }" style="height: 40px; font-size: 14px;">
-			<ul class="nav justify-content-center gap-5 nav-underline">
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/calendar" style="padding-bottom: 1px">일정</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opa city-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">첨부</a></li>
-				<li class="nav-item"><a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/member" style="padding-bottom: 1px">멤버</a></li>
-			</ul>
-		</div>
+<%@ include file="/WEB-INF/view/component/header.jspf"%>
 
 		<div class="mx-auto d-flex align-items-start pt-3 " style="width: 1034px;">
 			<!-- 1 -->
-			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 50px">
+			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 115px">
 				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
 				<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
 				<div class="mt-2">
@@ -42,7 +21,7 @@
 							<button type="button" id="write" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }"  data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
 						</c:when>
 						<c:when test="${member.memberStatus eq 'request' }">
-							<button type="button" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }">가입대기중</button>
+							<button type="button" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }" style="cursor:default;">가입대기중</button>
 						</c:when>
 						<c:otherwise>
 							<button type="button" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }" data-bs-toggle="modal" data-bs-target="#joinBandModal">가입신청하기</button>
@@ -93,7 +72,7 @@
 								<c:forEach var="image" items="${one.images }" varStatus="vs">
 									<div class="${vs.last and vs.count %2 ne 0? 'col-12' : 'col-6' }" style="padding: 1px;">
 										<div class="card rounded-1 border border-1" style="height: 200px;">
-											<img src="${contextPath }${image.imageUrl }" class="h-100 object-fit-cover overflow-hidden">
+											<img src="${contextPath }${image.imageUrl }" class="h-100 object-fit-cover overflow-hidden" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" data-url="${image.imageUrl }" onclick="imageInsert(event);">
 										</div>
 									</div>
 								</c:forEach>
@@ -130,7 +109,7 @@
 				</c:forEach>
 			</div>
 			<!-- 3 -->
-			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
+			<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 115px">
 				<div class="p-2 shadow-sm rounded-1" style="background-color: white;">
 					<div class="fw-bold border-bottom border-1 p-1"><small>다가오는 일정</small></div>
 					<div class="d-flex align-items-center mt-2" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar'" style="cursor: pointer;">
@@ -234,8 +213,25 @@
 			</div>
 		</div>
 	</div>
+	<!-- image Modal -->
+	<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" 
+	style="background-color: rgba(0,0,0,0.75)">
+		<div class="modal-dialog modal-dialog-centered justify-content-center" id="innerModal">
+			
+		</div>
+	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
+		function imageInsert(e) {
+			const modal = document.querySelector("#innerModal");
+			modal.innerHTML = '';
+			
+			const img = document.createElement("img");
+			img.className="p-2 border"
+			img.src = '${contextPath}' + e.target.dataset.url;
+			modal.appendChild(img);
+		}
+		
 		document.querySelector("#images").onchange = function(e) {
 			
 			// 이전에 선택되어있던 것들 삭제
@@ -363,15 +359,17 @@
 		}
 		
 		function deletePost(e) {
-			const xhr = new XMLHttpRequest();
-			xhr.open("delete", "${contextPath}/band/post/delete?postId=" + e.target.dataset.postId, true);
-			xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-			xhr.send();
-			xhr.onreadystatechange = function() {
-				if(xhr.readyState == 4) {
-					var response = JSON.parse(xhr.responseText);
-					if (response.result == 'success') {
-						document.querySelector("#wrap").removeChild(e.target.parentElement.parentElement.parentElement);
+			if(window.confirm("게시물을 삭제하시겠습니까?")) {
+				const xhr = new XMLHttpRequest();
+				xhr.open("delete", "${contextPath}/band/post/delete?postId=" + e.target.dataset.postId, true);
+				xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+				xhr.send();
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState == 4) {
+						var response = JSON.parse(xhr.responseText);
+						if (response.result == 'success') {
+							document.querySelector("#wrap").removeChild(e.target.parentElement.parentElement.parentElement);
+						}
 					}
 				}
 			}
@@ -448,18 +446,23 @@
 			let postId = input.dataset.postId;
 			let memberId = input.dataset.memberId;
 			let message = input.value;
+			if (message.trim() == '' || message == null) {
+				window.alert("댓글을 입력해주세요");
+				e.preventDefault();
+			} else {
 			
-			const xhr = new XMLHttpRequest();
-			xhr.open("post", "${contextPath}/band/comment/add", true);
-			xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-			xhr.send("commentPostId=" + postId + "&commentMemberId=" + memberId + "&message=" + message);
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4) {
-					var response = JSON.parse(xhr.responseText);
-					if (response.result == 'success') {
-						e.target.parentElement.parentElement.parentElement.style.display = 'none';
-						input.value='';
-						
+				const xhr = new XMLHttpRequest();
+				xhr.open("post", "${contextPath}/band/comment/add", true);
+				xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+				xhr.send("commentPostId=" + postId + "&commentMemberId=" + memberId + "&message=" + message);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						var response = JSON.parse(xhr.responseText);
+						if (response.result == 'success') {
+							e.target.parentElement.parentElement.parentElement.style.display = 'none';
+							input.value='';
+							
+						}
 					}
 				}
 			}
