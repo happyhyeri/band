@@ -27,36 +27,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class IndexController {
 	
-	private final UserDao userDao;
 	private final BandMemberDao bandMemberDao;
 	private final ProfileDao profileDao;
 	private final BandRoomDao bandRoomDao;
 	
-	
-	@GetMapping("/index/{id}")
-	public String showIndex(@PathVariable String id, HttpSession session, Model model) {
-		
-		User user = userDao.findUserById(id);
-		
-		session.setAttribute("logonUser", user);
-		
-		List<BandMember> bandList = bandMemberDao.findBandRoomsByMemberId(user.getUserId());
-		//System.out.println("bandList의 사이즈--> "+bandList.size());
-		List<Integer> bandMemberCnt = new ArrayList<>();
-		for(BandMember one : bandList) {
-			bandMemberCnt.add(bandMemberDao.countMembers(one.getMemberBandRoomId()));
-		}
-		
-		for(int i = 0; i < bandList.size(); i++) {
-			bandList.get(i).setCnt(bandMemberCnt.get(i));
-		}
-		
-		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
-		model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
-		
-		model.addAttribute("bandList",bandList);
-		return "index";
-	}
 	
 	@GetMapping("/index")
 	public String showShowIndex(@SessionAttribute(required = false) User logonUser, Model model) {

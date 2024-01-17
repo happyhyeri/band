@@ -110,13 +110,13 @@ public class ImageController {
 
 	// 전체사진 중 삭제
 	@PostMapping("/band/{bandRoomId}/wholeImage/delete")
-	public void deleteWholeImage(@PathVariable String bandRoomId,
-			HttpServletResponse response, @SessionAttribute User logonUser, @RequestParam List<Integer> checkInput,
-			@RequestParam int[] memberId) throws IOException {
+	public void deleteWholeImage(@PathVariable String bandRoomId, HttpServletResponse response,
+			@SessionAttribute User logonUser, @RequestParam List<Integer> checkInput, @RequestParam int[] memberId)
+			throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("memberBandRoomId", bandRoomId);
 		map.put("memberUserId", logonUser.getUserId());
@@ -132,22 +132,23 @@ public class ImageController {
 					int x = imageDao.deleteWholeImage(checkInput.get(i));
 					System.out.println("사진삭제 결과--> " + x);
 				}
-				out.println("<script>alert('"+"삭제 성공 했습니다."+"');location.href='/band/band/"+bandRoomId+"/album/total';</script>");
+				out.println("<script>alert('" + "삭제 성공 했습니다." + "');location.href='/band/band/" + bandRoomId
+						+ "/album/total';</script>");
 				out.flush();
 			} else {
 				System.out.println("에러창을 띄워줘야 하는데...?");
-				out.println("<script>alert('"+"삭제 권한이 없습니다."+"');history.back();</script>");
+				out.println("<script>alert('" + "삭제 권한이 없습니다." + "');history.back();</script>");
 				out.flush();
 			}
 		}
-		//return "redirect:/band/"+bandRoomId+"/album/total";
+		// return "redirect:/band/"+bandRoomId+"/album/total";
 	}
 
 	// 전체사진 중 저장
 	@PostMapping("/band/{bandRoomId}/wholeImage/save")
-	public void controlWholeImage(@PathVariable String bandRoomId,
-			HttpServletResponse response, @SessionAttribute User logonUser, @RequestParam List<Integer> checkInput,
-			@RequestParam int[] memberId) throws IOException {
+	public void controlWholeImage(@PathVariable String bandRoomId, HttpServletResponse response,
+			@SessionAttribute User logonUser, @RequestParam List<Integer> checkInput, @RequestParam int[] memberId)
+			throws IOException {
 
 		// 이미지를 찾아서 이미지파일 이름 알아내기
 
@@ -235,7 +236,7 @@ public class ImageController {
 						fileName.add(list[4]);
 					} else {
 						filePath.add("c:\\band\\upload\\" + bandRoomId + "\\" + list[4]);
-						//System.out.println("filePaht ::: " + filePath);
+						// System.out.println("filePaht ::: " + filePath);
 						fileName.add(list[5]);
 					}
 
@@ -287,16 +288,23 @@ public class ImageController {
 		}
 
 	}
-	
+
 	// 앨범사진 중 삭제
-		@PostMapping("/band/{bandRoomId}/albumImage/delete")
-		public void deleteAlbumImage(@PathVariable String bandRoomId,
-				HttpServletResponse response, @SessionAttribute User logonUser, @RequestParam List<Integer> checkInput,
-				@RequestParam int[] memberId) throws IOException {
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html; charset=utf-8");
-			PrintWriter out = response.getWriter();
-			
+	@PostMapping("/band/{bandRoomId}/albumImage/delete")
+	public void deleteAlbumImage(@PathVariable String bandRoomId, HttpServletResponse response,
+			@SessionAttribute User logonUser, @RequestParam(required = false) List<Integer> checkInput,
+			@RequestParam int albumIdForUpdate, @RequestParam int[] memberId) throws IOException {
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+
+		if (checkInput == null || checkInput.isEmpty()) {
+			out.println("<script>alert('" + "사진을 선택해주세요." + "');location.href='/band/band/" + bandRoomId + "/album/"
+					+ albumIdForUpdate + "';</script>");
+			out.flush();
+		} else {
+
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("memberBandRoomId", bandRoomId);
 			map.put("memberUserId", logonUser.getUserId());
@@ -309,19 +317,21 @@ public class ImageController {
 
 				if (memberId[y] == member.getMemberId() || member.getMemberId() == leader) {
 					for (int i = 0; i < checkInput.size(); i++) {
-						//------------여기 DAO 수정하기----------------//
+						// ------------여기 DAO 수정하기----------------//
 						int x = imageDao.deleteWholeImage(checkInput.get(i));
 						System.out.println("사진삭제 결과--> " + x);
 					}
-					out.println("<script>alert('"+"삭제 성공 했습니다."+"');location.href='/band/band/"+bandRoomId+"/album/total';</script>");
+					out.println("<script>alert('" + "삭제 성공 했습니다." + "');location.href='/band/band/" + bandRoomId
+							+ "/album/" + albumIdForUpdate + "';</script>");
 					out.flush();
 				} else {
 					System.out.println("에러창을 띄워줘야 하는데...?");
-					out.println("<script>alert('"+"삭제 권한이 없습니다."+"');history.back();</script>");
+					out.println("<script>alert('" + "삭제 권한이 없습니다." + "');history.back();</script>");
 					out.flush();
 				}
 			}
-			
 		}
+
+	}
 
 }

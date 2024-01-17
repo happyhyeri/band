@@ -73,7 +73,7 @@
 								</div>
 								<div class="dropdown">
 									<button
-										class="btn btn-secondary dropdown-toggle rounded-circle"
+										class="btn  dropdown-toggle rounded-circle"
 										type="button" data-bs-toggle="dropdown" aria-expanded="false"
 										style="width: 35px; height: 50px; background-color: transparent; border: none;">
 										<img
@@ -108,8 +108,8 @@
 			</div>
 			<c:forEach var="one" items="${bandList }" >
 				<div class="card rounded-4" style="width: 186px; height: 210px ; overflow: hidden;">
-					<div >
-						<img class="" alt="밴드커버" src="${contextPath }${one.bandRoom.coverImageUrl}" width="100%">
+					<div style="width: 184px; height: 139px ">
+						<img class="" alt="밴드커버" src="${contextPath }${one.bandRoom.coverImageUrl}" width="100%" height="100%">
 					</div>
 					<div class="mt-1 ps-2">
 						<a href="${contextPath }/band/${one.memberBandRoomId}" class="stretched-link">
@@ -131,7 +131,9 @@
 			  	<c:forEach var="one" items="${roomList }">
 				    <div class="col d-flex gap-4" style="padding: 10px">
 				  	  	<div class="rounded-3" style="width: 80px; height: 80px; overflow: hidden;">
-				  	  		<img alt="밴드커버" src="${contextPath }${one.coverImageUrl }" width="100%" height="100%">
+				  	  		<a href="${contextPath }/band/${one.bandRoomId}">
+				  	  			<img alt="밴드커버" src="${contextPath }${one.coverImageUrl }" width="100%" height="100%">
+				  	  		</a>
 				  	  	</div>
 				  	  	<div>
 				  	  		<div style="font-weight: bold;text-align: left;">
@@ -143,14 +145,14 @@
 				  	  			${one.bandRoomDescription }
 				  	  		</div>
 				  	  		<div style="text-align: left">
-				  	  			<button type="button" class="btn btn-light btn-sm rounded-3"  style="height: 25px">
+				  	  			<button type="button" class="btn btn-light btn-sm rounded-3"  style="height: 25px"
+				  	  						onclick="location.href='${contextPath }/band/${one.bandRoomId}'">
 				  	  				<div style="color: #A9A9A9; font-size: 12px">밴드 더보기 ></div>
 				  	  			</button>
 				  	  		</div>
 				  	  	</div>
 				    </div>
 			  	</c:forEach>
-			    
 			  </div>
 			</div>
 		</div>

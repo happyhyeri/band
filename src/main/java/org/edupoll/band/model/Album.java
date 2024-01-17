@@ -18,4 +18,5 @@ public class Album {
 	private String albumBandRoomId;
 	private String albumTitle;
 	private Date albumMakeAt;
+	private String imageUrl;
 }

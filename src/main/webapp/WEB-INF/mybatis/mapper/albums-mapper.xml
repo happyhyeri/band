@@ -21,4 +21,30 @@
   		SELECT * FROM ALBUMS WHERE ALBUM_BANDROOM_ID = #{albumBandRoomId}
   	</select>
   	
+  	<delete id="deleteByAlbumId">
+	 	delete from albums where album_id = #{albumId}
+	 </delete>
+	 
+	 <update id="update">
+  		UPDATE ALBUMS
+  		SET ALBUM_TITLE = #{albumTitle}
+  		WHERE ALBUM_ID = #{albumId}
+  	</update>
+  	
+  	<select id="findAlbumWithAlbumImage" resultType="album">
+  		select x.album_id
+		      ,x.album_bandRoom_id
+		      ,x.album_title
+		      ,x.album_make_at
+		      ,y.image_url
+		  from
+		(SELECT a.album_id
+		       ,a.album_bandRoom_id
+		       ,a.album_title
+		       ,a.album_make_at
+		  FROM ALBUMS a WHERE ALBUM_BANDROOM_ID = #{bandRoomId}) x 
+		  	right join images y on x.album_id = y.image_album_id 
+		  	where album_id IS NOT NULL
+  	</select>
+  	
   </mapper>

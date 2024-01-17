@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="/WEB-INF/view/component/header.jspf"%>
 
-
 	<div class="mx-auto d-flex align-items-start pt-3" style="width: 1034px;">
 		<!-- 1 -->		
 			<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 115px;">
@@ -24,7 +23,7 @@
 					<small>누구나 밴드를 검색해 찾을 수 있고, 밴드 소개와 게시글을 볼 수 있습니다.</small>
 				</div>
 				<c:if test="${bandRoom.leader eq member.memberId }">
-					<div class="text-secondary mt-2" style="cursor:pointer;">
+					<div class="text-secondary mt-2" style="cursor:pointer;" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/setting/cover-update'">
 						<i class="bi bi-gear"></i> 밴드 설정
 					</div>
 				</c:if>
@@ -35,6 +34,7 @@
 			<c:when test="${logonUser ne null }">
 			
 				<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="position:sticky;  ;min-width: 500px; background-color: white">
+				
 					<div class="d-flex justify-content-between" style="height: 65px; background-color: white;">
 						<div class="ps-3 pt-3">
 							<span style="font-weight: bold; font-size: 19px">사진첩</span>
@@ -68,7 +68,7 @@
 										<div class="col lb-wrap" style="width: 190px; height: 190px; padding: 0.1rem">									
 											<a href="${contextPath }/band/${bandRoomId}/album/total">
 												<img class="lb-image" alt="전체사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%">
-												<c:if test="${cntTotalImage gt 4 }">
+												<c:if test="${cntTotalImage gt 6 }">
 													<span class="lb-text" style="width: 185px; height: 188px; padding-top: 80px;">더보기 +</span>
 												</c:if>
 											</a>									
@@ -91,7 +91,7 @@
 							<div class="ps-3 pt-3">
 								<div style="font-weight: bold; font-size: 15px">앨범</div>
 							</div>
-							<div class="pe-3 pt-3">업데이트순!!(수정)</div>
+							<div class="pe-3 pt-3">업데이트순</div>
 						</div>
 					</div>
 					<div class="ps-3 pe-3">	
@@ -100,7 +100,8 @@
 								<div class="d-flex justify-content-between pt-2 mb-2" >
 									<div class="ps-3 pt-1">
 										<a href="${contextPath }/band/${bandRoomId}/album/${one.albumId}" >
-										<div style="font-weight: bold; font-size: 15px">${one.albumTitle }</div></a>
+											<div style="font-weight: bold; font-size: 15px">${one.albumTitle }</div>
+										</a>
 										<div style="font-size: 11px; color: #B2B1B9;">${now }</div>
 									</div>
 									<div class="pe-3 pt-2">
@@ -112,17 +113,16 @@
 										</button>
 									</div>
 								</div>
+								<!-- 앨범 나열 -->
 								<ul class="row row-cols-3" style="list-style: none; padding-left: 12px; margin-bottom: 0; width: 102%">
 									<c:forEach var="two" items="${albumImageList }">
 										<c:choose>
-											<c:when test="${one.albumId eq two.imageAlbumId }">
-											
+											<c:when test="${one.albumId eq two.imageAlbumId }">													
 												<li class="p-1 col" style="width: 100px; height: 100px">
 													<a href="${contextPath }/band/${bandRoomId}/album/${two.imageAlbumId}">
 														<img alt="앨범사진" src="${contextPath }${two.imageUrl}" width="100%" height="100%">
-													</a>
-												</li>
-											
+													</a> 
+												</li>																					
 											</c:when>
 										</c:choose>
 									</c:forEach>
@@ -147,11 +147,17 @@
 			</c:otherwise>
 		</c:choose>
 		<!-- 3 -->
-		<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 115px;">
-			<div>다가오는 일정</div>
-			<div>채팅</div>
-			<div>파일</div>
-			<div>최근 사진</div>
+		<div class="pb-3 ms-3 " style="min-width: 208px; position: sticky; top: 50px">
+			<div class="p-2 shadow-sm rounded-1" style="background-color: white;">
+				<div class="fw-bold border-bottom border-1 p-1"><small>다가오는 일정</small></div>
+				<div class="d-flex align-items-center mt-2" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/calendar'" style="cursor: pointer;">
+					<div class="ms-1">
+						<div class="fw-bold text-center"><fmt:formatDate value="${nextSchedule.scheduleDate }" pattern="dd"/></div>
+						<div class="text-center"><small><fmt:formatDate value="${nextSchedule.scheduleDate }" pattern="MM월"/></small></div>
+					</div>
+					<div class="flex-grow-1 fw-bold ms-3">${nextSchedule.scheduleTitle }</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

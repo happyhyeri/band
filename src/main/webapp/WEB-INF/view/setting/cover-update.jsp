@@ -58,7 +58,7 @@
 						</div>
 						<div class="dropdown">
 							<button
-								class="btn btn-secondary dropdown-toggle rounded-circle"
+								class="btn  dropdown-toggle rounded-circle"
 								type="button" data-bs-toggle="dropdown" aria-expanded="false"
 								style="width: 35px; height: 50px; background-color: transparent; border: none;">
 								<img

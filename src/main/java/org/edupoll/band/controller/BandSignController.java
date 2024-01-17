@@ -66,7 +66,7 @@ public class BandSignController {
 		}
 
 		if (!createBandRoom.getBandimage().isEmpty()) {
-			File dir = new File("d:\\band\\upload\\coverImage\\", uuids[0].toUpperCase());
+			File dir = new File("c:\\band\\upload\\coverImage\\", uuids[0].toUpperCase());
 			dir.mkdirs();
 			File target = new File(dir, "img.jpg");
 			createBandRoom.getBandimage().transferTo(target);
