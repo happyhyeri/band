@@ -17,7 +17,7 @@
 			<div class="card-body d-flex flex-column justify-content-start">
 				<h5 class="card-title" style="word-break: keep-all;">band에 오신걸 환영합니다.</h5>
 				<div class="mb-3 flex-grow-1">
-					<form action = "${pageContext.servletContext.contextPath }/signin" method="post">
+					<form action = "${pageContext.servletContext.contextPath }/auth/login_page" method="post">
 						<div class="mb-3 form-gruop">
 							<label for="login" class="form-label">로그인</label> <input
 								class="form-control" name="userId" id="login" type="text"
@@ -52,7 +52,7 @@
 
 	<div style="text-align: center; margin-top: 0px">
 		<p>band회원이 아니신가요?</p>
-		<a href="${pageContext.servletContext.contextPath }/register"> <p>회원가입하러가기</p></a>
+		<a href="${pageContext.servletContext.contextPath }/auth/sign_up_form"><p>회원가입하러가기</p></a>
 	</div>
 </body>
 <script>

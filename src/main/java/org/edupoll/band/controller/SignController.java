@@ -21,12 +21,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@RequestMapping
 @Controller
 public class SignController {
 	private final NaverAPIService naverAPIService;
@@ -45,7 +47,7 @@ public class SignController {
 	@Value("${naver.client.secret}")
 	String naverClientSecret;
 
-	@GetMapping("/signin")
+	@GetMapping("/auth/login_page")
 	public String showSign(@RequestParam(required =false) String userId, Model model) {
 		// 카카오
 		String kakaoLoginLink = "https://kauth.kakao.com/oauth/authorize?";
@@ -74,19 +76,19 @@ public class SignController {
 		return "signin";
 	}
 	
-	@PostMapping("/signin")
+	@PostMapping("/auth/login_page")
 	public String proceedLogin(@ModelAttribute User user, @RequestParam String password, HttpSession session,  Model model) {
 		
 		User foundUser = userDao.findUserById(user.getUserId());
 		
 		if(foundUser == null || !foundUser.getUserPassword().equals(password)) {
 			model.addAttribute("error", true);
-			return "/signin";
+			return "signin";
 		}
 		
 		session.setAttribute("logonUser", foundUser);
 
-		return "redirect:/index"; //구분해줘야할듯 로그인 인덱스와
+		return "redirect:/"; //구분해줘야할듯 로그인 인덱스와
 	}
 	
 	
@@ -130,7 +132,7 @@ public class SignController {
 			session.setAttribute("logonUser", user);
 
 		}
-		return "redirect:/index";
+		return "redirect:/";
 	}
 
 	// 네이버 연동 로그인
@@ -169,23 +171,23 @@ public class SignController {
 			session.setAttribute("logonUser", user);
 
 		}
-		return "redirect:/index";
+		return "redirect:/";
 	}
 
-	@GetMapping("/register")
+	@GetMapping("/auth/sign_up_form")
 	public String showRegister() {
 
 		return "register";
 	}
 
-	@PostMapping("/register")
+	@PostMapping("/auth/sign_up_form")
 	public String proceedRegister(@ModelAttribute User user, @RequestParam String profileNickName,
 			@RequestParam String birthParam, Model model) {
 
 		User foundUser = userDao.findUserById(user.getUserId());
 		if (foundUser != null) {
 			model.addAttribute("error", true);
-			return "register";
+			return "/auth/sign_up_form";
 		}
 		
 		
@@ -204,10 +206,10 @@ public class SignController {
 				.profileImageUrl("/resource/registericon/default.jpg").build();
 		profileDao.profileSave(NewProfile);
 
-		return "redirect:/signin?userId=" + user.getUserId();
+		return "redirect:/auth/login_page?userId=" + user.getUserId();
 	}
 
-	@GetMapping("/register/idcheck")
+	@GetMapping("/auth/sign_up_form/idcheck")
 	@ResponseBody
 	public String proceedIdAvailable(@RequestParam String userId, Model model) {
 
@@ -220,7 +222,7 @@ public class SignController {
 
 	}
 
-	@GetMapping("/register/phoneNumberCheck")
+	@GetMapping("/auth/sign_up_form/phoneNumberCheck")
 	@ResponseBody
 	public String proceedPhoneNumberAvailable(@RequestParam String phoneNumber, Model model) {
 		String pattern = "(010|011|016|017|018|019)(.+)(.{4})";
@@ -233,7 +235,7 @@ public class SignController {
 		}
 	}
 	
-	@GetMapping("/register/birthCheck")
+	@GetMapping("/auth/sign_up_form/birthCheck")
 	@ResponseBody
 	public String proceedBirthAvailable(@RequestParam String birthParam, Model model) {
 		String pattern = "(19[0-9][0-9]|20\\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])";

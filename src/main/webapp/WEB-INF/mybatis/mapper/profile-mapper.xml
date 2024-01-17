@@ -12,9 +12,6 @@
   	<update id ="profileUpdate">
   		update profiles
   		<set>
-			<if test="profileId != null">
-				profile_Id = #{profileId },
-			</if>
 			<if test="profileNickName != null">
 				PROFILE_NICKNAME = #{profileNickName,jdbcType=VARCHAR },
 			</if>

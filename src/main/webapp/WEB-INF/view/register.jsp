@@ -26,7 +26,7 @@
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 	<c:set var="rootPath"
 			value="${pageContext.servletContext.contextPath }" />
-		<form action="${pageContext.servletContext.contextPath }/register" method="post">
+		<form action="${pageContext.servletContext.contextPath }/auth/sign_up_form" method="post">
 		<div class="container text-center">
 			<h1 class="text-center">회 원 가 입</h1>
 				<div class="card mx-auto"  style="width: 40rem; height: 50rem ;">
@@ -120,7 +120,7 @@
 			
 			const xhr =new XMLHttpRequest();
 		
-			xhr.open("get", "${pageContext.servletContext.contextPath }/register/idcheck?userId=" + value, true);
+			xhr.open("get", "${pageContext.servletContext.contextPath }/auth/sign_up_form/idcheck?userId=" + value, true);
 		
 			xhr.onreadystatechange = function() {
 				
@@ -151,7 +151,7 @@
 			
 			const xhr =new XMLHttpRequest();
 		
-			xhr.open("get", "${pageContext.servletContext.contextPath }/register/phoneNumberCheck?phoneNumber=" + value, true);
+			xhr.open("get", "${pageContext.servletContext.contextPath }/auth/sign_up_form/phoneNumberCheck?phoneNumber=" + value, true);
 		
 			xhr.onreadystatechange = function() {
 				
@@ -185,7 +185,7 @@
 		
 		const xhr =new XMLHttpRequest();
 	
-		xhr.open("get", "${pageContext.servletContext.contextPath }/register/birthCheck?birthParam=" + value, true);
+		xhr.open("get", "${pageContext.servletContext.contextPath }/auth/sign_up_form/birthCheck?birthParam=" + value, true);
 	
 		xhr.onreadystatechange = function() {
 			
