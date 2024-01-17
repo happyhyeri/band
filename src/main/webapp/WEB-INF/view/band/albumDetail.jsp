@@ -31,7 +31,7 @@
 			</div>
 		
 		<!-- 2 -->
-		<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="position:sticky;min-width: 500px;  background-color: white">
+		<div class="flex-grow-1 flex-column shadow-sm rounded-1 pb-3" style="position:sticky;min-width: 500px;  background-color: white">
 			
 				<div class="d-flex justify-content-between" style="height: 65px;  background-color: white">
 					<div class="ps-3 pt-4">

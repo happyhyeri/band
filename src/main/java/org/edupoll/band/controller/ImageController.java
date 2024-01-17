@@ -317,7 +317,6 @@ public class ImageController {
 
 				if (memberId[y] == member.getMemberId() || member.getMemberId() == leader) {
 					for (int i = 0; i < checkInput.size(); i++) {
-						// ------------여기 DAO 수정하기----------------//
 						int x = imageDao.deleteWholeImage(checkInput.get(i));
 						System.out.println("사진삭제 결과--> " + x);
 					}

@@ -16,6 +16,7 @@ import org.edupoll.band.dao.BandRoomDao;
 import org.edupoll.band.dao.ImageDao;
 import org.edupoll.band.dao.PostDao;
 import org.edupoll.band.dao.ProfileDao;
+import org.edupoll.band.dao.ScheduleDao;
 import org.edupoll.band.dao.UserDao;
 import org.edupoll.band.model.Album;
 import org.edupoll.band.model.BandMember;
@@ -23,10 +24,12 @@ import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.Image;
 import org.edupoll.band.model.Post;
 import org.edupoll.band.model.Profile;
+import org.edupoll.band.model.Schedule;
 import org.edupoll.band.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +50,12 @@ public class AlbumController {
 	private final AlbumDao albumDao;
 	private final ImageDao imageDao;
 	private final UserDao userDao;
+	private final ScheduleDao scheduleDao;
 	
+	@ModelAttribute("nextSchedule")
+	public Schedule findNextSchedule() {
+		return scheduleDao.findNextSchedule();
+	}
 	
 	// 사진첩 메인
 	@GetMapping("/band/{bandRoomId}/album")

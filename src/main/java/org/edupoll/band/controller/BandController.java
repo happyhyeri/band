@@ -117,7 +117,6 @@ public class BandController {
 			BandMember member = bandMemberDao.findByRoomIdAndUserId(criteria);
 			model.addAttribute("member", member);
 			
-			
 			return "band/totalImage";
 		}
 		
