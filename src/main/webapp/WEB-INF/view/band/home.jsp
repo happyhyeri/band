@@ -55,7 +55,7 @@
 					<small>누구나 밴드를 검색해 찾을 수 있고, 밴드 소개와 게시글을 볼 수 있습니다.</small>
 				</div>
 				<c:if test="${bandRoom.leader eq member.memberId }">
-					<div class="text-secondary mt-2" style="cursor:pointer;">
+					<div class="text-secondary mt-2" style="cursor:pointer;" onclick="location.href='${contextPath}/band/${bandRoom.bandRoomId }/setting/cover-update'">
 						<i class="bi bi-gear"></i> 밴드 설정
 					</div>
 				</c:if>

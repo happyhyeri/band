@@ -8,9 +8,9 @@
 	
   	<insert id="saveBandroom">
   		INSERT INTO BANDROOMS 
-  		(BANDROOM_ID,BANDROOM_NAME,BANDROOM_MAKE_AT,COVER_IMAGE_URL,BANDROOM_COLOR,TYPE)
+  		(BANDROOM_ID,BANDROOM_NAME,BANDROOM_MAKE_AT,BANDROOM_DESCRIPTION,COVER_IMAGE_URL,BANDROOM_COLOR,TYPE)
   		VALUES
-  		(#{bandRoomId}, #{bandRoomName}, sysdate , #{coverImageUrl}, #{bandRoomColor}, #{type})
+  		(#{bandRoomId}, #{bandRoomName}, sysdate ,#{bandRoomDescription}, #{coverImageUrl}, #{bandRoomColor}, #{type})
   	</insert>
   	 	
   	<select id="findByBandRoomId" resultType="bandroom">
@@ -45,5 +45,15 @@
   	<select id="findLeader" resultType="integer">
   		select leader from bandrooms where bandroom_id = #{bandRoomId}
   	</select>
+  	
+  	<select id="findBandRoomNotIncludeByUserId"  resultType="bandroom">
+		select b.*
+			from        
+			(select COUNT(*), m.member_bandroom_id 
+			  from bandmembers m 
+			     where not member_user_id = #{userId}
+			        group by m.member_bandroom_id) a 
+			join bandrooms b on a.member_bandroom_id = b.bandroom_id
+	</select>
   	
   </mapper>

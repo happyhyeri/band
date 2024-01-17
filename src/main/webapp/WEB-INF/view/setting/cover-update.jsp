@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>band create</title>
+<title>BAND</title>
 <style type="text/css">
 ::placeholder {
 	color: #E2E2E2;
@@ -21,7 +21,6 @@
 </head>
 <c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
 <body>
-
 	<div class="sticky-top" style="background-color: #F0F0F0">
 		<div class="mx-auto" style="width: 1034px;">
 			<div class="">
@@ -79,14 +78,14 @@
 	</div>
 	<div class="container mt-2">
 		<div style="width: 750px; margin: auto">
-			<form action="${pageContext.servletContext.contextPath }/band/band-create" method="post" enctype="multipart/form-data">
+			<form action="${pageContext.servletContext.contextPath }/band/${bandRoom.bandRoomId}/setting/cover-update" method="post" enctype="multipart/form-data">
 			<input type="hidden" value="" name="coverImageUrl" id="coverImageUrl">
 				<div style="width: 100%" class="mb-3">
 					<div class="mb-3">
 						<span style="font-size: 14px" class="fw-bold">밴드 이름</span>
 					</div>
 					<div>
-						<input type="text" name="bandRoomName" placeholder="밴드 이름 입력" id="bandRoomName"
+						<input type="text" name="bandRoomName" value="${bandRoom.bandRoomName }" id="bandRoomName"
 							class="border-bottom"
 							style="border: none; width: 100%; outline: none; line-height: 54px; font-size: 30px; font-weight: 400;"
 							maxlength="50">
@@ -96,7 +95,7 @@
 					<div class="col">
 						<div style="overflow-x: auto; margin-top: 7px">
 							<img
-								src="${pageContext.servletContext.contextPath }/resource/bandIcon/1.jpg"
+								src="${contextPath}${bandRoom.coverImageUrl}"
 								width="300" height="235" id="imageView">
 						</div>
 					</div>
@@ -135,40 +134,32 @@
 					<span style="font-size: small">밴드이름과 사진은 개설 후에도 변경할 수 있어요</span>
 				</div>
 				<div class="mb-4">
-					<div>
-						<span style="font-size: 14px" class="fw-bold">밴드 공개</span>
+					<div class="mb-3">
+						<span style="font-size: 14px" class="fw-bold">밴드 컬러</span>
 					</div>
-					<div style="background-color: #FBF9F1; height: 130px" class="row">
-						<div class="col" style="padding-left: 70px">
-							<div class="d-flex flex-column">
-								<div class="d-flex justify-content-start gap-3 pt-4" >
-									<div>
-										<input type="radio" value="secret" name="type" id="secret" /> 
-									</div>
-									<div>
-										<label for="secret" style="cursor: pointer;">
-											<Strong style="font-size: 14px">비공개 밴드</Strong><br/>
-											<span style="font-size: 13px"> 밴드와 게시글이 공개되지 않습니다. <br/>초대를 통해서만 가입할 수 있습니다. </span>
-										</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col">
-							<div class="d-flex flex-column">
-								<div class= "d-flex justify-content-start gap-3 pt-4" style="cursor: pointer;">
-									<div>
-										<input type="radio" value="open" name="type" id="open" /> 
-									</div>
-									<div>
-										<label for="open" style="cursor: pointer;"> 
-											<strong style="font-size: 14px">공개 밴드</strong> <br/>
-											<span style="font-size: 13px"> 누구나 밴드를 검색해 찾을 수 있고,<br/> 밴드 소개와 게시글을 볼 수 있습니다. </span>
-										</label>
-									</div>
-								</div>
-							</div>                    
-						</div>
+					<div class="form-check " style="">
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option1" autocomplete="off" ${bandRoom.bandRoomColor eq 'c00C737' ? 'checked' : '' } value="c00C737">
+						<label class="btn rounded-circle" for="option1" style="width: 30px; height: 30px; background-color: #00C73C; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option2" autocomplete="off" ${bandRoom.bandRoomColor eq 'c00B1A0' ? 'checked' : '' } value="c00B1A0">
+						<label class="btn rounded-circle" for="option2" style="width: 30px; height: 30px; background-color: #00B1A0; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option3" autocomplete="off" ${bandRoom.bandRoomColor eq 'c1BA7E9' ? 'checked' : '' } value="c1BA7E9">
+						<label class="btn rounded-circle" for="option3" style="width: 30px; height: 30px; background-color: #1BA7E9; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option4" autocomplete="off" ${bandRoom.bandRoomColor eq 'c8367EB' ? 'checked' : '' } value="c8367EB">
+						<label class="btn rounded-circle" for="option4" style="width: 30px; height: 30px; background-color: #8367EB; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option5" autocomplete="off" ${bandRoom.bandRoomColor eq 'cFC5460' ? 'checked' : '' } value="cFC5460">
+						<label class="btn rounded-circle" for="option5" style="width: 30px; height: 30px; background-color: #FC5460; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option6" autocomplete="off" ${bandRoom.bandRoomColor eq 'cFC6342' ? 'checked' : '' } value="cFC6342">
+						<label class="btn rounded-circle" for="option6" style="width: 30px; height: 30px; background-color: #FC6342; border: none; margin-right: 30px"></label>					
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option7" autocomplete="off" ${bandRoom.bandRoomColor eq 'cFFA91C' ? 'checked' : '' } value="cFFA91C">
+						<label class="btn rounded-circle" for="option7" style="width: 30px; height: 30px; background-color: #FFA91C; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option8" autocomplete="off" ${bandRoom.bandRoomColor eq 'c909090' ? 'checked' : '' } value="c909090">
+						<label class="btn rounded-circle" for="option8" style="width: 30px; height: 30px; background-color: #909090; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option9" autocomplete="off" ${bandRoom.bandRoomColor eq 'c5879EA' ? 'checked' : '' } value="c5879EA">
+						<label class="btn rounded-circle" for="option9" style="width: 30px; height: 30px; background-color: #5879EA; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option10" autocomplete="off" ${bandRoom.bandRoomColor eq 'c424B52' ? 'checked' : '' } value="c424B52">
+						<label class="btn rounded-circle" for="option10" style="width: 30px; height: 30px; background-color: #424B52; border: none; margin-right: 30px"></label>
+						<input type="radio" class="btn-check" name="bandRoomColor" id="option11" autocomplete="off" ${bandRoom.bandRoomColor eq 'cF85C8E' ? 'checked' : '' } value="cF85C8E">
+						<label class="btn rounded-circle" for="option11" style="width: 30px; height: 30px; background-color: #F85C8E; border: none"></label>
 					</div>
 				</div>
 				<div class="d-flex justify-content-center gap-4">
@@ -178,7 +169,7 @@
 						</button>
 					</div>
 					<div>
-						<button id="submitbutton" type="submit" class="btn btn-secondary " style="width: 150px; height: 42px" disabled="disabled">
+						<button id="submitbutton" type="submit" class="btn btn-secondary " style="width: 150px; height: 42px">
 							완료
 						</button>
 					</div>
@@ -216,23 +207,16 @@
 
 		}
 		
-		// 밴드이름 미기입시 완료버튼 비활성화
+
 		const target = document.querySelector("#submitbutton");
 		
-		document.querySelector("#bandRoomName").onchange = function(e) {
-			if(!e.target.value){
-				target.disabled = true;
-			}else{
-				target.disabled = false;
-				
-				// 완료 클릭 時 컨트롤러로 이미지 url 전송
-				target.onclick = function(e){
-					let imageUrl = document.querySelector('#imageView').src;
-					console.log(document.querySelector('#imageView').src);
-					document.querySelector('#coverImageUrl').value = imageUrl;
-				}
-			}
+		// 완료 클릭 時 컨트롤러로 이미지 url 전송
+		target.onclick = function(e){
+			let imageUrl = document.querySelector('#imageView').src;
+			console.log(document.querySelector('#imageView').src);
+			document.querySelector('#coverImageUrl').value = imageUrl;
 		}
+		
 	</script>
 
 </body>

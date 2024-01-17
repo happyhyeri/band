@@ -1,78 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${bandRoom.bandRoomName }</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-<style type="text/css">
-	
-	img:hover {
-		box-shadow: 1px 1px 20px #ddd;	
-}	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/view/component/header.jspf"%>
 
-</style>
-</head>
-<c:set var="contextPath" value="${pageContext.servletContext.contextPath }"/>
-<body>
-<div style="background-color: #F0F0F0;">
-	<div class="sticky-top" style="background-color: black; height: 40px; font-size: 14px;">
-		<ul class="nav justify-content-center gap-5 nav-underline" >
-		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}" style="padding-bottom: 1px">게시글</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="${contextPath }/band/${bandRoomId}/album" style="padding-bottom: 1px">사진첩</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">일정</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#"  style="padding-bottom: 1px">첨부</a>
-		  </li>
-		   <li class="nav-item">
-		    <a class="nav-link link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#" style="padding-bottom: 1px">멤버</a>
-		  </li>
-		</ul>
-	</div>	
 
 	<div class="mx-auto d-flex align-items-start pt-3" style="width: 1034px;">
 		<!-- 1 -->
-		<div class="pb-3 me-3 sticky-top" style="width: 208px; height: 157px;">
-			<!-- 
-			<img src="${fn:startsWith(bandRoom.coverImageUrl, '/band/upload') ? contextPath:'' }${bandRoom.coverImageUrl }" alt="커버사진"
-				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
-			 -->
-			 <img src="${contextPath }/resource/bandIcon/1.jpg" alt="커버사진"
-				style="min-width: 208px; min-height: 157px; background-color: aliceblue;">
-			<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
-			<div class="mt-2">
-				멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대
+		<div class="pb-3 me-3 " style="width: 208px; height: 157px; position: sticky; top: 115px">
+
+				<img src="${contextPath }/${bandRoom.coverImageUrl}" alt="커버사진" style="width: 208px; height: 157px; background-color: white; overflow: hidden;" class="rounded-1 object-fit-cover">
+				<div class="h4 pt-2">${bandRoom.bandRoomName }</div>
+				<div class="mt-2">
+					멤버 ${memberCnt } ㆍ <i class="bi bi-plus-circle"></i> 초대
+				</div>
+				<div class="mt-2">
+					<small>${bandRoom.bandRoomDescription }</small>
+				</div>
+				<div class="mt-2">	
+					<button type="button" id="write" class="py-2 border-0 w-100 text-center my-2 rounded-1 ${bandRoom.bandRoomColor }"  data-bs-toggle="modal" data-bs-target="#postWriteModal">글쓰기</button>
+				</div>
+				<div class="text-secondary border-bottom border-1 pb-2 lh-1">
+					<small>누구나 밴드를 검색해 찾을 수 있고, 밴드 소개와 게시글을 볼 수 있습니다.</small>
+				</div>
+				<c:if test="${bandRoom.leader eq member.memberId }">
+					<div class="text-secondary mt-2" style="cursor:pointer;">
+						<i class="bi bi-gear"></i> 밴드 설정
+					</div>
+				</c:if>
 			</div>
-			<div class="mt-2">
-				<small>${bandRoom.bandRoomDescription }</small>
-			</div>
-			<div class="mt-2">
-				<c:choose>
-					<c:when test="${member.memberStatus eq 'accept' }">
-						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
-							data-bs-target="#joinBandModal">글쓰기</button>
-					</c:when>
-					<c:when test="${member.memberStatus eq 'request' }">
-						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
-							data-bs-target="#joinBandModal">가입대기중</button>
-					</c:when>
-					<c:otherwise>
-						<button type="button" class="btn w-100 text-center" style="background-color: ${bandRoom.bandRoomColor};" data-bs-toggle="modal"
-							data-bs-target="#joinBandModal">가입신청하기</button>
-					</c:otherwise>
-				</c:choose>
-			</div>
-		</div>
 		
 		<!-- 2 -->
 		<div class="flex-grow-1 flex-column shadow-sm rounded-1" style="min-width: 500px;  background-color: white">
@@ -109,14 +65,17 @@
 						</div>
 					</div>
 				</div>
+				<form action="${contextPath }/band/${bandRoomId}/albumImage/save" method="post" id="control">
 				<div class="row row-cols-3" style="margin-left: 10px; width: 99%; margin-top: 18px">
 					<c:forEach var="one" items="${albumAllImages}">
 						<div class="col position-relative" id="images" style="width: 190px; height: 190px; padding: 0.1rem">							
 							<img alt="해당앨범사진" src="${contextPath }${one.imageUrl}" width="100%" height="100%" >
-							<input class="position-absolute top-0 end-0" type="checkbox" id="checkInput" name="checkInput" value="${one.imageUrl}"style="margin-top: 8px; margin-right: 8px; display: none"/>	
+							<input class="position-absolute top-0 end-0" type="checkbox" id="checkInput" name="checkInput" value="${one.imageUrl}"
+									style="margin-top: 8px; margin-right: 8px; display: none"/>	
 						</div>
 					</c:forEach>
 				</div>
+				</form>
 				<div style="display: none;" id="stickyBottom" class="sticky-bottom">
 					<div class="d-flex"  style="background-color: rgb(255,255,255,0.9); display: none;">
 						<div class="p-2" style="width: 85%;font-size: 13px">
@@ -132,7 +91,7 @@
 		</div>
 		
 		<!-- 3 -->
-		<div class="pb-3 ms-3 sticky-top" style="min-width: 208px;">
+		<div class="pb-3 ms-3 " style="min-width: 208px;position: sticky; top: 115px;">
 			<div>다가오는 일정</div>
 			<div>채팅</div>
 			<div>파일</div>
@@ -153,7 +112,7 @@
 			      </div>
 			      <div style="width: 500px; height: 374px; padding-left: 20px; padding-right: 20px">
 			        <form action="${contextPath }/band/${bandRoomId}/albumImage" method="post" enctype="multipart/form-data" >
-			     	 	<input type="hidden" id="albumId" name="albumId" value=""/>
+			     	 	<input type="hidden" id="albumId" name="albumId" value="${albumId }"/>
 			     	 	<div>
 				      		<div style="overflow: scroll;overflow-x:hidden; min-height:270px ; max-height: 270px">	
 			      				<div id="albumImageView" class="row row-cols-5" style="padding-left: 9px; padding-right: 9px" >
@@ -226,6 +185,17 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
+	
+	document.querySelector("#deleteImage").onclick = function(e){
+		
+		document.querySelector("#control").action = "${contextPath }/band/${bandRoomId}/albumImage/delete";
+		document.querySelector("#control").submit();
+	}
+	
+	document.querySelector("#saveImage").onclick = function(e){
+		document.querySelector("#control").submit();
+	}
+	
 	
 	const list = document.querySelectorAll('#checkInput');
 	let cnt = 0;

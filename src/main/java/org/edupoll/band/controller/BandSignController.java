@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.edupoll.band.dao.BandMemberDao;
 import org.edupoll.band.dao.BandRoomDao;
 import org.edupoll.band.dao.ProfileDao;
+import org.edupoll.band.dao.UserDao;
 import org.edupoll.band.model.BandMember;
 import org.edupoll.band.model.BandRoom;
 import org.edupoll.band.model.CreatBandRoom;
@@ -19,14 +20,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
-import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,10 +35,14 @@ public class BandSignController {
 	private final BandRoomDao bandRoomDao;
 	private final BandMemberDao bandMemberDao;
 	private final ProfileDao profileDao;
+	private final UserDao userDao;
 
   @GetMapping("/band-create")
-	public String showFormForBandCerate() {
-
+	public String showFormForBandCerate(@SessionAttribute User logonUser, Model model) {
+	  	User user = userDao.findUserById(logonUser.getUserId());
+		List<Profile> profiles = profileDao.findProfileById(user.getUserId());
+		model.addAttribute("profileImageUrl", profiles.get(0).getProfileImageUrl());
+	  
 		return "band/band-create";
 	}
 
@@ -76,7 +77,8 @@ public class BandSignController {
 		BandRoom one = BandRoom.builder().bandRoomId(uuids[0].toUpperCase()) //
 				.bandRoomName(createBandRoom.getBandRoomName()) //
 				.coverImageUrl(imageUrl) //
-				.bandRoomColor("green") //
+				.bandRoomColor("cF85C8E") //
+				.bandRoomDescription("저희 밴드에 놀러오세요 :")
 				.type(createBandRoom.getType()) //
 				.build();
 

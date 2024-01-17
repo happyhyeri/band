@@ -73,5 +73,7 @@
 			bandmembers b left join profiles p on b.member_profile_id = p.profile_id
 			where member_bandroom_id = #{bandRoomId} and member_status = 'request'
 	</select>
+	
+	
 
 </mapper>
