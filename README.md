@@ -7,6 +7,8 @@
 #### 멀티프로필 기능 구현을 위해 코드를 변경한다면..
 
 ![멀티프로필](https://github.com/happyhyeri/band/assets/132744632/299f53c9-d482-42da-a549-0e23a9faea73)
+![스크린샷 2024-04-03 165447](https://github.com/happyhyeri/band/assets/132744632/4d08bf13-9c22-4062-a090-75e074a90c3c)
+
 
 -----
 
